@@ -7,6 +7,7 @@
 \usepackage{tabularx}
 \usepackage{multirow}
 \usepackage{hyperref}
+\usepackage{enumitem}
 %\usepackage{minted}
 \graphicspath{{images/}}
 
@@ -18,8 +19,21 @@
     \maketitle
 
     \section{Treść zadania}
-    \textbf{Zadanie 1.}
-    
+    \textbf{Zadanie 1.} Celem zadania jest zastosowanie metody najmniejszych kwadratów
+    do predykcji, czy nowotwór jest złosliwy, czy łagodny. Nowotwory złosliwe i łagodne
+    maja rózne charakterystyki wzrostu. \\
+    Do rozwiazania problemu wykorzystamy bibliotekę \texttt{pandas}, typ
+    \texttt{DataFrame} oraz dwa zbiory danych:
+    \begin{itemize}[label=--]
+        \item \texttt{breast-cancer-train.dat}
+        \item \texttt{breast-cancer-validate.dat}
+    \end{itemize}
+    Zawierają one klasę nowotworu oraz cechy, tj. charakterystyki nowotworu. \\
+    Wykorzystamy liniową oraz kwadratową metodę najmniejszych kwadratów. Do
+    reprezentacji danych liniowej metody najmniejszych kwadratów wykorzystamy macierz
+    \[
+        A_{lin}=
+    \]
 
     \section{Specyfikacja użytego środowiska}
     Specyfikacja:

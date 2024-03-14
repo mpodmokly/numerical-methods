@@ -91,6 +91,11 @@ print(f"Correct diagnosis of benign (linear): {benign_linear}/{benign_no}")
 print(f"Correct diagnosis of malignant (quadratic): {malignant_quadratic}/{malignant_no}")
 print(f"Correct diagnosis of benign (quadratic): {benign_quadratic}/{benign_no}")
 
+accurancy_linear = (malignant_linear + benign_linear) / (malignant_no + benign_no)
+accurancy_quadratic = (malignant_quadratic + benign_quadratic) / (malignant_no + benign_no)
+print(f"Accurancy of linear method: {round(accurancy_linear * 100, 2)}%")
+print(f"Accurancy of quadratic method: {round(accurancy_quadratic * 100, 2)}%")
+
 data_name = "radius (mean)"
-show_histogram(data_name)
+#show_histogram(data_name)
 #show_plot(data_name)
