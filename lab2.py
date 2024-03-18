@@ -57,6 +57,9 @@ add7 = linear_validate[:, 2] * linear_validate[:, 3]
 add7 = add7.reshape(-1, 1)
 quadratic_validate = np.hstack((linear_validate, add1, add2, add3, add4, add5, add6, add7))
 
+linear_train = df_train.iloc[:, 2:].values
+linear_validate = df_validate.iloc[:, 2:].values
+
 b_train = np.where(df_train["Malignant/Benign"] == "M", 1, -1)
 b_validate = np.where(df_validate["Malignant/Benign"] == "M", 1, -1)
 

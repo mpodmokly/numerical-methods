@@ -8,6 +8,8 @@
 \usepackage{multirow}
 \usepackage{hyperref}
 \usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{listings}
 %\usepackage{minted}
 \graphicspath{{images/}}
 
@@ -29,11 +31,45 @@
         \item \texttt{breast-cancer-validate.dat}
     \end{itemize}
     Zawierają one klasę nowotworu oraz cechy, tj. charakterystyki nowotworu. \\
-    Wykorzystamy liniową oraz kwadratową metodę najmniejszych kwadratów. Do
-    reprezentacji danych liniowej metody najmniejszych kwadratów wykorzystamy macierz
+    Wykorzystamy liniową oraz kwadratową metodę najmniejszych kwadratów. Dla
+    reprezentacji kwadratowej użyjemy tylko podzbioru dostępnych danych, tj.
+    danych z kolumn \texttt{radius (mean)}, \texttt{perimeter (mean)},
+    \texttt{area (mean)}, \texttt{symetry (mean)}. Do reprezentacji liniowej
+    danych metody najmniejszych kwadratów wykorzystamy macierz
     \[
         A_{lin}=
+        \begin{bmatrix}
+            f_{1,1} & \cdots & f_{1,m} \\
+            f_{2,1} & \cdots & f_{2,m} \\
+            \vdots & \cdots  & \vdots \\
+            f_{n,1} & \cdots & f_{n,m}
+        \end{bmatrix}
     \]
+    Reprezentacja kwadratowa:
+    \[
+        A_{quad}=
+    \]
+    \[
+        \begin{bmatrix}
+            f_{1,1}, f_{1,2}, f_{1,3}, f_{1,4},
+            f_{1,1}^2, f_{1,2}^2, f_{1,3}^2, f_{1,4}^2,
+            f_{1_1}f_{1_2}, f_{1_1}f_{1_3}, f_{1_1}f_{1_4},
+            f_{1_2}f_{1_3}, f_{1_2}f_{1_4}, f_{1_3}f_{1_4} \\
+            \vdots \\
+            f_{n,1}, f_{n,2}, f_{n,3}, f_{n,4},
+            f_{n,1}^2, f_{n,2}^2, f_{n,3}^2, f_{n,4}^2,
+            f_{n_1}f_{n_2}, f_{n_1}f_{n_3}, f_{n_1}f_{n_4},
+            f_{n_2}f_{n_3}, f_{n_2}f_{n_4}, f_{n_3}f_{n_4}
+        \end{bmatrix}
+    \]
+
+    \subsection*{}
+    Wagi możemy obliczyć z równania normalnego:
+    \[
+        w=(A^TA)^{-1}A^Tb
+    \]
+    Rozwiazujac równanie normalne nalezy uzyc funkcji \texttt{solve} unikając
+    obliczania odwrotności macierzy.
 
     \section{Specyfikacja użytego środowiska}
     Specyfikacja:
@@ -46,5 +82,33 @@
     \end{itemize}
 
     \section{Rozwiązanie problemu}
+    W realizacji rozwiązania wykorzystane zostały następujące biblioteki:
+    \begin{figure}[H]
+        \includegraphics[width=0.6\linewidth]{libs2.png}
+        \caption{Wykorzystane biblioteki.}
+    \end{figure}
+
+    \subsection*{}
+    Stworzone zostały reprezentacje danych zawartych w obu zbiorach dla liniowej
+    i kwadratowej metody najmniejszych kwadratów (łącznie 4 macierze). Następnie
+    stworzony został wektor $b$ dla obu zbiorów, który reprezentuje rodzaj
+    nowotworu (1 - złośliwy, -1 - łagodny). \\
+    Wagi zostały obliczone w następujący sposób:
+    \[
+        \texttt{np.linalg.solve}(A^TA,A^Tb)
+    \]
+    Obliczanie współczynników uwarunkowania macierzy:
+    \[
+        \texttt{np.linalg.cond}(A^TA)
+    \]
+    Można sprawdzić skuteczność przewidywań otrzymanych wag. W tym celu
+    obliczamy wektor $p$ przez pomnożenie reprezentacji zbiorów walidacyjnych
+    z odpowiednimi wektorami wag. Jeżeli $p[i] > 0$, to przewidujemy, że $i$-ta
+    osoba ma nowotwór złośliwy, natomiast jeśli $p[i] \leq 0$, to przewidujemy,
+    że ma łagodny. Porównane zostały wektory $p$ dla obu reprezentacji
+    z odpowiednimi wektorami $b$ w celu wekryfikacji poprawności.
+
+    \section{Przedstawienie wyników}
+    
 
 \end{document}
