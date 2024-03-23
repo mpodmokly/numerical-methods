@@ -109,6 +109,30 @@
     z odpowiednimi wektorami $b$ w celu wekryfikacji poprawności.
 
     \section{Przedstawienie wyników}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{cancer_radius_hist.png}
+        \caption{Histogram przedstawiający średni promień nowotworu.}
+    \end{figure}
+
+    Współczynniki uwarunkowania macierzy:
+    \[
+        cond_{lin} \approx 1.81 \cdot 10^{12}
+    \]
+    \[
+        cond_{quad} \approx 9.06 \cdot 10^{17}
+    \]
+
+    \subsubsection*{Metoda liniowa}
+    Prawidłowe rozpoznania nowotworu złośliwego : $58/60$. \\
+    Prawidłowe rozpoznania nowotworu łagodnego : $194/200$. \\
+    Dokładność: $96.92\%$
+    \subsubsection*{Metoda kwadratowa}
+    Prawidłowe rozpoznania nowotworu złośliwego : $55/60$. \\
+    Prawidłowe rozpoznania nowotworu łagodnego : $185/200$. \\
+    Dokładność: $92.31\%$
+
+    \section{Wnioski}
     
 
 \end{document}
