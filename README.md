@@ -1,3 +1,5 @@
 # numerical-methods
-Lab1 - counting errors in numerical computing  
-Lab2 -
+## Projects content
+Lab 1 - counting errors in numerical computing.<br>
+Lab 2 - linear regression using least squares method.<br>
+Lab 3 -
