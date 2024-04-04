@@ -1,0 +1,108 @@
+\documentclass[11pt]{scrartcl}
+\usepackage{polski}
+\usepackage[polish]{babel}
+
+\usepackage{graphicx, float, caption, subcaption}
+\usepackage{amsmath}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{listings}
+%\usepackage{minted}
+\graphicspath{{images/}}
+
+\title{Laboratorium 3 - Interpolacja}
+\author{Mateusz Podmokły}
+\date{14 marzec 2024}
+
+\begin{document}
+    \maketitle
+
+    \section{Treść zadania}
+    \textbf{Zadanie 1.} Wyznacz wielomian interpolacyjny dla punktów
+    reprezentujących populację Stanów Zjednoczonych na przestrzeni
+    lat. Dane do interpolacji:
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{c | c}
+            Rok & Populacja \\
+            \hline
+            1900 & 76 212 168 \\
+            1910 & 92 228 496 \\
+            1920 & 106 021 537 \\
+            1930 & 123 202 624 \\
+            1940 & 132 164 569 \\
+            1950 & 151 325 798 \\
+            1960 & 179 323 175 \\
+            1970 & 203 302 031 \\
+            1980 & 226 542 199 \\
+        \end{tabular}
+    \end{table}
+    \subsection*{}
+    Rozważ następujące funkcje bazowe $\phi_j(t)$ dla wielomianu,
+    gdzie $j=1,..,9$:
+    \[
+        \phi_j(t)=t^{j-1}
+    \]
+    \[
+        \phi_j(t)=(t-1900)^{j-1}
+    \]
+    \[
+        \phi_j(t)=(t-1940)^{j-1}
+    \]
+    \[
+        \phi_j(t)=\left(\frac{t-1940}{40}\right)^{j-1}
+    \]
+    Dla najlepiej uwarunkowanej bazy wielomianów wyznacz wielomian
+    interpolacyjny na trzy sposoby. Pierwszy polega na rozwiązaniu
+    układu równań powstałego z macierzy Vandermonde'a i funkcji bazowych
+    \[
+        \begin{bmatrix}
+            \phi_1(x_1) & \phi_2(x_1) & \phi_3(x_1) & \cdots &
+            \phi_n(x_1) \\
+            \phi_1(x_2) & \phi_2(x_2) & \phi_3(x_2) & \cdots &
+            \phi_n(x_2) \\
+            \vdots & \vdots & \vdots & \ddots & \vdots \\
+            \phi_1(x_n) & \phi_2(x_n) & \phi_3(x_n) & \cdots &
+            \phi_n(x_n)
+        \end{bmatrix}
+        \begin{bmatrix}
+            a_1 \\
+            a_2 \\
+            \vdots \\
+            a_n
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            y_1 \\
+            y_2 \\
+            \vdots \\
+            y_n
+        \end{bmatrix}
+    \]
+
+    \subsection*{}
+    Następnie oblicz wielomian interpolacyjny Lagrange'a oraz wielomian
+    interpolacyjny Newtona i dokonaj ekstrapolacji wielomianu do
+    roku 1990. Porównaj otrzymaną wartość ekstrapolacji z prawdziwą
+    wartością populacji w roku 1990 wynoszącą 248 709 873 \\
+    Na koniec zaokrąglij dane wejściowe do pełnych milionów, ponownie
+    oblicz współczynniki wielomianu i porównaj wyniki interpolacji
+    z poprzednimi wynikami.
+
+    \section{Specyfikacja użytego środowiska}
+    Specyfikacja:
+
+    \begin{itemize}
+        \item Środowisko: Visual Studio Code,
+        \item Język programowania: Python,
+        \item System operacyjny: Microsoft Windows 11,
+        \item Architektura systemu: x64.
+    \end{itemize}
+
+    \section{Rozwiązanie problemu}
+    
+\end{document}

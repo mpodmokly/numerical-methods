@@ -56,14 +56,14 @@ def zad2():
     n = 225
     sequence1 = np.float32(np.array([1/3, 1/12]))
     for i in range(n - 2):
-        sequence1 = np.float32(np.append(sequence1, 2.25 * sequence1[-1] - 0.5 * sequence1[-2]))
+        sequence1 = np.float32(np.append(sequence1, np.float32(2.25) * sequence1[-1] - np.float32(0.5) * sequence1[-2]))
 
     x = np.linspace(0, n - 1, n)
-    #plt.plot(x, sequence1, label="x32, n = 225")
+    plt.plot(x, sequence1, label="x32, n = 225")
 
     real = (4 ** -x) / 3
     err = abs(sequence1 - real) / real
-    plt.plot(x, err, label="x32, n = 225")
+    #plt.plot(x, err, label="x32, n = 225")
 
     
     n = 60
@@ -72,11 +72,11 @@ def zad2():
         sequence2 = np.append(sequence2, 2.25 * sequence2[-1] - 0.5 * sequence2[-2])
 
     x = np.linspace(0, n - 1, n)
-    #plt.plot(x, sequence2, label="x64, n = 60")
+    plt.plot(x, sequence2, label="x64, n = 60")
 
     real = (4 ** -x) / 3
     err = abs(sequence2 - real) / real
-    plt.plot(x, err, label="x64, n = 60")
+    #plt.plot(x, err, label="x64, n = 60")
 
     n = 225
     sequence3 = np.array([Fraction(1,3), Fraction(1,12)])
@@ -84,11 +84,11 @@ def zad2():
         sequence3 = np.append(sequence3, Fraction(9,4) * sequence3[-1] - Fraction(1,2) * sequence3[-2])
 
     x = np.linspace(0, n - 1, n)
-    #plt.plot(x, sequence3, label="fractions, n=225")
+    plt.plot(x, sequence3, label="fractions, n=225")
 
     real = (4 ** -x) / 3
     err = abs(sequence3 - real) / real
-    plt.plot(x, err, label="fractions, n=225")
+    #plt.plot(x, err, label="fractions, n=225")
 
     plt.yscale("log")
     plt.xlabel("k")

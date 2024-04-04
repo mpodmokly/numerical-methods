@@ -8,6 +8,5 @@
 *.out
 *.gz
 
-breast-cancer-train.dat
-breast-cancer-validate.dat
-breast-cancer.labels
+*.dat
+*.labels
