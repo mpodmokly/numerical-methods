@@ -147,25 +147,27 @@
     \end{figure}
 
     Współczynniki uwarunkowania macierzy:
-    \[
-        cond_{lin} \approx 1.81 \cdot 10^{12}
-    \]
-    \[
-        cond_{quad} \approx 9.06 \cdot 10^{17}
-    \]
+    \begin{align*}
+        & cond_{lin} \approx 1.81 \cdot 10^{12} \\
+        & cond_{quad} \approx 9.06 \cdot 10^{17}
+    \end{align*}
     Zatem lepiej uwarunkowana jest macierz w przypadku metody liniowej.
 
     \subsubsection*{Metoda liniowa}
     Prawidłowe rozpoznania nowotworu złośliwego : $58/60$. \\
     Prawidłowe rozpoznania nowotworu łagodnego : $194/200$. \\
-    Dokładność: $96.92\%$
+    Dokładność: $96.92\%$.
     \subsubsection*{Metoda kwadratowa}
     Prawidłowe rozpoznania nowotworu złośliwego : $55/60$. \\
     Prawidłowe rozpoznania nowotworu łagodnego : $185/200$. \\
-    Dokładność: $92.31\%$
+    Dokładność: $92.31\%$.
     \subsubsection*{}
     Wyższą dokładnością charakteryzuje się metoda liniowa.
 
     \section{Wnioski}
-
+    Wyniki pokazują, że regresja liniowa metodą najmniejszych kwadratów, z wysoką
+    dokładnością (prawie $97\%$), przewiduje typ nowotworu na podstawie wybranych
+    objawów. Macierz metody liniowej jest lepiej uwarunkowana, z czego może wynikać
+    wyższa dokładność tej metody w porównaniu do metody kwadratowej. Może być ona
+    wykorzystywana w analizie różnych zbiorów danych.
 \end{document}
