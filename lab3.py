@@ -1,48 +1,26 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def interpolation(years, vals, matrix, mode):
-    coefficients = np.linalg.solve(matrix, vals)
-    x = np.linspace(1900, 1980, 9)
-    if mode == 1:
-        y = np.polyval(coefficients, years)
-    elif mode == 2:
-        y = np.polyval(coefficients, years - 1900)
-    elif mode == 3:
-        y = np.polyval(coefficients, years - 1940)
-    elif mode == 4:
-        y = np.polyval(coefficients, (years - 1940) / 40)
-    else:
-        print("Invalid mode")
-        return
-    plt.scatter(x, y)
+REAL90 = 248709873
 
-    x = np.linspace(1900, 1990, 91)
-    if mode == 1:
-        y = np.polyval(coefficients, x)
-    elif mode == 2:
-        y = np.polyval(coefficients, x - 1900)
-    elif mode == 3:
-        y = np.polyval(coefficients, x - 1940)
-    elif mode == 4:
-        y = np.polyval(coefficients, (x - 1940) / 40)
-    plt.plot(x, y)
+def interpolation(years, vals):
+    vand1 = np.vander(years)
+    vand2 = np.vander(years - 1900)
+    vand3 = np.vander(years - 1940)
+    vand4 = np.vander((years - 1940) / 40)
 
-    real90 = 248709873
-    if mode == 1:
-        val90 = np.polyval(coefficients, 1990)
-    elif mode == 2:
-        val90 = np.polyval(coefficients, 1990 - 1900)
-    elif mode == 3:
-        val90 = np.polyval(coefficients, 1990 - 1940)
-    elif mode == 4:
-        val90 = np.polyval(coefficients, (1990 - 1940) / 40)
-    print(f"year 1990: {round(val90)}")
-    print(f"relative error: {round(abs(real90 - val90) / real90 * 100, 2)}%")
+    cond1 = np.linalg.cond(vand1)
+    cond2 = np.linalg.cond(vand2)
+    cond3 = np.linalg.cond(vand3)
+    cond4 = np.linalg.cond(vand4)
 
-    plt.scatter(1990, real90, color="green")
-    plt.scatter(1990, val90, color="red")
-    plt.show()
+    print(f"Cond 1: {cond1:.2e}")
+    print(f"Cond 2: {cond2:.2e}")
+    print(f"Cond 3: {cond3:.2e}")
+    print(f"Cond 4: {cond4:.2e} (best)")
+
+    coefficients = np.linalg.solve(vand4, vals)
+    return coefficients
 
 def lagrange(years, vals, x):
     n = len(years)
@@ -56,16 +34,6 @@ def lagrange(years, vals, x):
         result += product * vals[i]
     
     return result
-
-def lagrange_show(years, vals):
-    x = np.linspace(1900, 1990, 10)
-    y = lagrange(years, vals, x)
-    plt.scatter(x, y)
-
-    x = np.linspace(1900, 1990, 91)
-    y = lagrange(years, vals, x)
-    plt.plot(x, y)
-    plt.show()
 
 def divided_differences(x, y):
     n = len(x)
@@ -98,88 +66,60 @@ def newton(years, vals, x):
     result = sum(term)
     return result
 
-def newton_show(years, vals):
-    x = np.linspace(1900, 1990, 10)
-    y = newton(years, vals, x)
-    plt.scatter(x, y)
-
-    x = np.linspace(1900, 1990, 91)
-    y = lagrange(years, vals, x)
-    plt.plot(x, y)
-    plt.show()
-
-def interpolation_rounded(years, vals, matrix, mode):
+def interpolation_rounded(years, vals):
+    n = len(years)
     vals_rounded = np.round(vals, -6)
-    coefficients_rounded = np.linalg.solve(matrix, vals_rounded)
-    coefficients = np.linalg.solve(matrix, vals)
+    vand4 = np.vander((years - 1940) / 40)
 
-    print("\nnormal rounded")
+    coefficients_rounded = np.linalg.solve(vand4, vals_rounded)
+    coefficients = np.linalg.solve(vand4, vals)
+
+    print("\nnormal | rounded")
     for i in range(n):
         print(coefficients[i], coefficients_rounded[i])
     
-    x = np.linspace(1900, 1980, 9)
-    if mode == 1:
-        y = np.polyval(coefficients_rounded, years)
-    elif mode == 2:
-        y = np.polyval(coefficients_rounded, years - 1900)
-    elif mode == 3:
-        y = np.polyval(coefficients_rounded, years - 1940)
-    elif mode == 4:
-        y = np.polyval(coefficients_rounded, (years - 1940) / 40)
-    else:
-        print("Invalid mode")
-        return
-    plt.scatter(x, y)
-
-    x = np.linspace(1900, 1990, 91)
-    if mode == 1:
-        y = np.polyval(coefficients_rounded, x)
-    elif mode == 2:
-        y = np.polyval(coefficients_rounded, x - 1900)
-    elif mode == 3:
-        y = np.polyval(coefficients_rounded, x - 1940)
-    elif mode == 4:
-        y = np.polyval(coefficients_rounded, (x - 1940) / 40)
-    plt.plot(x, y)
-
-    real90 = 248709873
-    if mode == 1:
-        val90 = np.polyval(coefficients_rounded, 1990)
-    elif mode == 2:
-        val90 = np.polyval(coefficients_rounded, 1990 - 1900)
-    elif mode == 3:
-        val90 = np.polyval(coefficients_rounded, 1990 - 1940)
-    elif mode == 4:
-        val90 = np.polyval(coefficients_rounded, (1990 - 1940) / 40)
-    print(f"year 1990: {round(val90)}")
-    print(f"relative error: {round(abs(real90 - val90) / real90 * 100, 2)}%")
-
-    plt.scatter(1990, real90, color="green")
-    plt.scatter(1990, val90, color="red")
-    plt.show()
+    return coefficients_rounded
 
 
 years = np.float64(np.array([1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980]))
 vals = np.float64(np.array([76212168, 92228496, 106021537, 123202624, 132164569,
                             151325798, 179323175, 203302031, 226542199]))
 
-n = len(years)
-vand1 = np.vander(years)
-vand2 = np.vander(years - 1900)
-vand3 = np.vander(years - 1940)
-vand4 = np.vander((years - 1940) / 40)
 
-cond1 = np.linalg.cond(vand1)
-cond2 = np.linalg.cond(vand2)
-cond3 = np.linalg.cond(vand3)
-cond4 = np.linalg.cond(vand4)
+coefficients = interpolation(years, vals)
+coefficients_rounded = interpolation_rounded(years, vals)
+pol = np.polynomial.Polynomial(np.flip(coefficients))
+pol_rounded = np.polynomial.Polynomial(np.flip(coefficients_rounded))
 
-print(f"Cond 1: {cond1:.2e}")
-print(f"Cond 2: {cond2:.2e}")
-print(f"Cond 3: {cond3:.2e}")
-print(f"Cond 4: {cond4:.2e} (best)")
+x = np.linspace(1900, 1990, 10)
+y = pol((x - 1940) / 40)
+plt.scatter(x, y)
 
-#interpolation(years, vals, vand4, 4)
-#lagrange_show(years, vals)
-#newton_show(years, vals)
-interpolation_rounded(years, vals, vand4, 4)
+x = np.linspace(1900, 1990, 91)
+y = pol((x - 1940) / 40)
+plt.plot(x, y, label="unrounded data")
+
+x = np.linspace(1900, 1990, 10)
+y = pol_rounded((x - 1940) / 40)
+plt.scatter(x, y)
+
+x = np.linspace(1900, 1990, 91)
+y = pol_rounded((x - 1940) / 40)
+plt.plot(x, y, label="data rounded to the nearest million")
+plt.scatter(1990, REAL90, color="green", label="real population in 1990")
+
+val90 = pol((1990 - 1940) / 40)
+print("\nnot rounded:")
+print(f"year 1990: {round(val90)}")
+print(f"relative error: {round(abs(REAL90 - val90) / REAL90 * 100, 2)}%")
+
+val90_rounded = pol_rounded((1990 - 1940) / 40)
+print("\nrounded:")
+print(f"year 1990: {round(val90_rounded)}")
+print(f"relative error: {round(abs(REAL90 - val90_rounded) / REAL90 * 100, 2)}%")
+
+plt.xlabel("Year")
+plt.ylabel("Population")
+plt.title("Interpolation of the US population data in years 1900-1990")
+plt.legend()
+plt.show()

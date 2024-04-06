@@ -2,19 +2,48 @@
 \usepackage{polski}
 \usepackage[polish]{babel}
 
-\usepackage{graphicx, float, caption, subcaption}
-\usepackage{amsmath}
-\usepackage{tabularx}
-\usepackage{multirow}
-\usepackage{hyperref}
-\usepackage{enumitem}
-\usepackage{amsmath}
-\usepackage{listings}
+\usepackage{graphicx, float, caption, subcaption, amsmath}
+\usepackage{tabularx, multirow, hyperref, enumitem, listings}
 %\usepackage{minted}
+
+\usepackage{listings, xcolor}
+\definecolor{md-black}{rgb}{0.12, 0.12, 0.12}
+\definecolor{md-teal}{rgb}{0.38, 0.79, 0.69}
+\definecolor{md-mauve}{rgb}{0.76, 0.52, 0.75}
+\definecolor{md-green}{rgb}{0.13, 0.55, 0.13}
+\definecolor{md-red}{rgb}{0.82, 0.10, 0.14}
+\definecolor{md-purple}{rgb}{0.69, 0.33, 0.73}
+\definecolor{md-orange}{rgb}{0.96, 0.42, 0.18}
+\definecolor{md-gray}{rgb}{0.44, 0.46, 0.51}
+
+\lstset{
+    language=Python,
+    basicstyle=\color{md-teal}\ttfamily,
+    keywordstyle=\color{md-mauve},
+    commentstyle=\color{md-green},
+    stringstyle=\color{md-red},
+    numbers=left,
+    numberstyle=\small\color{md-gray}\ttfamily,
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{md-black},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=none,
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+    escapeinside={\%*}{*)},
+    numbersep=-10pt,
+    morekeywords={as}
+}
+
 \graphicspath{{images/}}
 
 \title{Laboratorium 2 - Regresja liniowa metodą najmniejszych kwadratów}
-\author{Mateusz Podmokły}
+\author{Mateusz Podmokły - II rok Informatyka WI}
 \date{7 marzec 2024}
 
 \begin{document}
@@ -83,10 +112,12 @@
 
     \section{Rozwiązanie problemu}
     W realizacji rozwiązania wykorzystane zostały następujące biblioteki:
-    \begin{figure}[H]
-        \includegraphics[width=0.6\linewidth]{libs2.png}
-        \caption{Wykorzystane biblioteki.}
-    \end{figure}
+
+    \begin{lstlisting}
+        import pandas as pd
+        import numpy as np
+        import matplotlib.pyplot as plt
+    \end{lstlisting}
 
     \subsection*{}
     Stworzone zostały reprezentacje danych zawartych w obu zbiorach dla liniowej
@@ -122,6 +153,7 @@
     \[
         cond_{quad} \approx 9.06 \cdot 10^{17}
     \]
+    Zatem lepiej uwarunkowana jest macierz w przypadku metody liniowej.
 
     \subsubsection*{Metoda liniowa}
     Prawidłowe rozpoznania nowotworu złośliwego : $58/60$. \\
@@ -131,8 +163,9 @@
     Prawidłowe rozpoznania nowotworu złośliwego : $55/60$. \\
     Prawidłowe rozpoznania nowotworu łagodnego : $185/200$. \\
     Dokładność: $92.31\%$
+    \subsubsection*{}
+    Wyższą dokładnością charakteryzuje się metoda liniowa.
 
     \section{Wnioski}
-    
 
 \end{document}
