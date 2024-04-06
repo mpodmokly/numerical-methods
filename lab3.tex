@@ -181,12 +181,13 @@
 
     \section{Przedstawienie wyników}
     \subsection{Interpolacja}
-    Współczynniki uwarunkowania czterech macierzy:
+    Współczynniki uwarunkowania czterech macierzy Vandermonde'a dla uogólnionej formy
+    wielomianu:
     \begin{align*}
-        cond_1 &= 8.49 \cdot 10^{41} \\
-        cond_2 &= 5.99 \cdot 10^{15} \\
-        cond_3 &= 9.32 \cdot 10^{12} \\
-        cond_4 &= 1.61 \cdot 10^3
+        & cond_1 = 8.49 \cdot 10^{41} \\
+        & cond_2 = 5.99 \cdot 10^{15} \\
+        & cond_3 = 9.32 \cdot 10^{12} \\
+        & cond_4 = 1.61 \cdot 10^3
     \end{align*}
     Najlepiej uwarunkowana macierz to macierz 4.
 
@@ -214,5 +215,12 @@
     Błąd względny uzyskanej wartości: 56.17\%.
 
     \section{Wnioski}
-
+    Najlepiej uwarunkowaną macierzą jest ta zbudowana z bazy, która zawiera
+    przesunięcie oraz przeskalowanie danych wejściowych. Niewielkie różnice między
+    wielomianem uogólnionym, wielomianem Lagrange'a i wielomianem Newtona mogą
+    wynikać ze zbyt małego stopnia złożoności wartości wejściowych. \\
+    Interpolacja wielomianowa, w tym przypadku, wydaje się dobrze estymować wartości
+    znajdujące się między węzłami, jednak ekstrapolacja wielomianu do roku 1990
+    powoduje znaczne zakłamanie wyniku w okolicy tego punktu. Przy szacowaniu
+    określonych wartości, należy ostrożnie korzystać z danych otrzymanych w wyniku ekstrapolacji wielomianu interpolacyjnego.
 \end{document}
