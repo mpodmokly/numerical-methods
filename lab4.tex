@@ -1,0 +1,61 @@
+\documentclass[11pt]{scrartcl}
+\usepackage{polski}
+\usepackage[polish]{babel}
+
+\usepackage{graphicx, float, caption, subcaption, amsmath}
+\usepackage{tabularx, multirow, hyperref, enumitem, listings}
+%\usepackage{minted}
+
+\usepackage{listings, xcolor}
+\definecolor{md-black}{rgb}{0.12, 0.12, 0.12}
+\definecolor{md-teal}{rgb}{0.38, 0.79, 0.69}
+\definecolor{md-mauve}{rgb}{0.76, 0.52, 0.75}
+\definecolor{md-green}{rgb}{0.13, 0.55, 0.13}
+\definecolor{md-red}{rgb}{0.82, 0.10, 0.14}
+\definecolor{md-purple}{rgb}{0.69, 0.33, 0.73}
+\definecolor{md-orange}{rgb}{0.96, 0.42, 0.18}
+\definecolor{md-gray}{rgb}{0.44, 0.46, 0.51}
+
+\lstset{
+    language=Python,
+    basicstyle=\color{md-teal}\ttfamily,
+    keywordstyle=\color{md-mauve},
+    commentstyle=\color{md-green},
+    stringstyle=\color{md-red},
+    numbers=left,
+    numberstyle=\small\color{md-gray}\ttfamily,
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{md-black},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=none,
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+    escapeinside={\%*}{*)},
+    numbersep=-10pt,
+    morekeywords={as}
+}
+
+\graphicspath{{images/}}
+
+\title{Laboratorium 3 - Efekt Rungego}
+\author{Mateusz Podmokły - II rok Informatyka WI}
+\date{21 marzec 2024}
+
+\begin{document}
+    \maketitle
+
+    \section{Treść zadania}
+    \textbf{Zadanie 1.} Wyznacz wielomiany interpolujące funkcje:
+    \[
+        f_1(x)=\frac{1}{1+25x^2}, x \in [-1,1],
+    \]
+    \[
+        f_2(x)=e^{cos(x)}, x \in [0,2\pi],
+    \]
+
+\end{document}
