@@ -4,9 +4,16 @@
 
 \usepackage{graphicx, float, caption, subcaption, amsmath}
 \usepackage{tabularx, multirow, hyperref, enumitem, listings}
+\usepackage{xcolor}
 %\usepackage{minted}
 
-\usepackage{listings, xcolor}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=black,
+    citecolor=black
+}
+
 \definecolor{md-black}{rgb}{0.12, 0.12, 0.12}
 \definecolor{md-teal}{rgb}{0.38, 0.79, 0.69}
 \definecolor{md-mauve}{rgb}{0.76, 0.52, 0.75}
@@ -126,5 +133,61 @@
     
     \section{Przedstawienie wyników}
 
+    \subsection{Interpolacja funkcji Rungego}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{interpolation1.png}
+        \caption{Porównanie uzyskanych interpolacji.}
+    \end{figure}
+
+    \subsection{Porównanie dokładności różnych metod interpolacji}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.75\linewidth]{interpolation2.png}
+        \caption{Wykres błędów interpolacji funkcji Rungego.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.75\linewidth]{interpolation3.png}
+        \caption{Wykres błędów interpolacji funkcji eksponencjalnej.}
+    \end{figure}
+
+    W przypadku funkcji Rungego, najbardziej dokładna jest
+    interpolacja funkcjami sklejanymi (splajnami). Funkcję
+    eksponencjalną najlepiej interpoluje wielomian Lagrange'a
+    z węzłąmi Czebyszewa. Przy zwiększaniu liczby węzłów interpolacji
+    rośnie dokładność, jedynie dla funkcji eksponencjalnej
+    interpolowanej wielomianem Lagrange'a od około 40 węzłów
+    dokładność zaczyna maleć.
+
+    \section{Wnioski}
+    \subsection{Obserwacje}
+    Interpolacja funkcji Rungego wielomianem Lagrange'a powoduje
+    duże niedokładności, szczególnie na krańcach przedziału.
+    Wykorzystanie węzłów Czebyszewa znacznie zmniejsza ten efekt,
+    natomiast najwyższą dokładność gwarantuje użycie do tego celu
+    funkcji sklejanych (splajnów). Może to wynikać z faktu, że
+    dla każdego przedziału dobieramy inny wielomian interpolacyjny,
+    co pozwala lepiej dopasować interpolację do funkcji. \\
+    Dla funkcji eksponencjalnej natomiast, dokładniejsza okazała
+    się interpolacja Lagrange'a z wykorzystaniem węzłów Czebyszewa,
+    które pozwalają w bardziej optymalny sposób dobrać węzły
+    interpolacji i dzięki temu uniknąć dużych niedokładności. \\
+    Wyższa dokładność przy większej liczbie węzłów interpolacji
+    jest spowodowana lepiej dopasowanym wielomianem interpolacyjnym
+    do danej funkcji, jedynym wyjątkiem tutaj jest interpolacja
+    Lagrane'a funkcji eksponencjalnej.
+
+    \subsection{Podsumowanie}
+    W przypadku niektórych funkcji zwykła interpolacja wielomianem
+    Lagrange'a okazuje się bardzo niedokładna, szczególnie na
+    krańcach przedziału. Należy wtedy zastosować inne techniki
+    interpolacji, jak na przykład węzły Czebyszewa, albo funkcje
+    sklejane, tzw. splajny. Pozwala to w takich sytuacjach zachować
+    wyższą dokładność.
+
+    \section{Bibliografia}
+    \url{https://pl.wikipedia.org/wiki/Funkcja_sklejana} \\
+    \url{https://pl.wikipedia.org/wiki/W%C4%99z%C5%82y_Czebyszewa}
 
 \end{document}

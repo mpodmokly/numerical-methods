@@ -132,8 +132,8 @@ def error_plot(func):
     plt.show()
 
 def zad2():
-    func = 2
+    func = 1
     error_plot(func)
 
 
-zad2()
+zad1()
