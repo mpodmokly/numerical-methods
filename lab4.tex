@@ -42,7 +42,7 @@
 
 \graphicspath{{images/}}
 
-\title{Laboratorium 3 - Efekt Rungego}
+\title{Laboratorium 4 - Efekt Rungego}
 \author{Mateusz Podmokły - II rok Informatyka WI}
 \date{21 marzec 2024}
 
@@ -57,5 +57,74 @@
     \[
         f_2(x)=e^{cos(x)}, x \in [0,2\pi],
     \]
+    używając:
+    \begin{itemize}[label=--]
+        \item wielomianów Lagrange'a z węzłami $x_j=x_0+jh, j=0,1,
+            \ldots ,n, h=\frac{x_n-x_0}{n}$
+        \item kubicznych funkcji sklejancyh z węzłami $x_j=x_0+jh,
+            j=0,1, \ldots ,n, h=\frac{x_n-x_0}{n}$
+        \item wielomianów Lagrange'a z węzłami Czebyszewa
+        \[
+            x_j=cos(\theta_j)
+        \]
+        \[
+            \theta_j=\frac{2j+1}{2(n+1)}\pi, 0 \leq j \leq n.
+        \]
+    \end{itemize}
+    Dla funkcji Rungego $f_1(x)$ wykonaj interpolację podanymi
+    sposobami z $n=12$ węzłami interpolacji. Przedstaw na wykresie
+    funkcję $f_1(x)$ oraz wyniki interpolacji. \\
+    Wykonaj interpolację funkcji $f_1(x)$ i $f_2(x)$ podanymi
+    sposobami z $n=4,5, \ldots ,50$ węzłami interpolacji. Przeprowadź
+    ewaluację wyników na zbiorze 500 losowo wybranych punktów.
+    Na wykresie przedstaw normę wektora błędu na tym zbiorze
+    punktów w zależności od liczby węzłów interpolacji dla każdej
+    metody, osobno dla obudwu funkcji.
+
+    \section{Specyfikacja użytego środowiska}
+    Specyfikacja:
+
+    \begin{itemize}
+        \item Środowisko: Visual Studio Code,
+        \item Język programowania: Python,
+        \item System operacyjny: Microsoft Windows 11,
+        \item Architektura systemu: x64.
+    \end{itemize}
+
+    \section{Rozwiązanie problemu}
+    W realizacji rozwiązania wykorzystane zostały następujące
+    biblioteki:
+    \begin{lstlisting}
+        import numpy as np
+        import matplotlib.pyplot as plt
+    \end{lstlisting}
+
+    \subsection*{}
+    Obliczamy wielomian interpolacyjny Lagrange'a ze wzoru
+    \[
+        w(x)=\sum_{i=0}^{n}y_i \cdot \prod_{j=0 \land j \neq i}^{n}
+        \frac{x-x_j}{x_i-x_j}
+    \]
+    Funkcje sklejane (splajny) obliczamy na każdym przedziale
+    oddzielnie wykorzystując wielomiany Lagrange'a. Węzły
+    Czebyszewa na przedziale $[-1,1]$ obliczamy ze wzoru
+    \[
+        x_j=cos(\theta_j)
+    \]
+    \[
+        \theta_j=\frac{2j+1}{2(n+1)}\pi, 0 \leq j \leq n.
+    \]
+    Transformacja węzłów Czebyszewa $r \in [-1,1]$ na punkty
+    $x \in [a,b]$ dana jest wzorem
+    \[
+        x=a+ \frac{(b-a)(r+1)}{2}
+    \]
+    Punkty do ewaluacji wylosowane zostały z użyciem funkcji
+    \texttt{np.random.uniform}, następnie obliczona została norma
+    wektora błędu względnego interpolacji za pomocą funkcji
+    \texttt{np.linalg.norm}.
+    
+    \section{Przedstawienie wyników}
+
 
 \end{document}

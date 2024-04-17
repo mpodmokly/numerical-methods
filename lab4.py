@@ -15,18 +15,32 @@ def lagrange(points, vals, x):
     return result
 
 def splines(n, func, x):
-    a = x // (2 / (n - 1)) * (2 / (n - 1))
-    b = a + (2 / (n - 1))
+    if func == 1:
+        f = f1
+        shift = 1
+        l = 2
+    else:
+        f = f2
+        shift = 0
+        l = 2 * np.pi
+
+    a = (x + shift) // (l / (n - 1)) * (l / (n - 1)) - shift
+    b = a + (l / (n - 1))
 
     points = np.linspace(a, b, 4)
-    vals = func(points)
+    vals = f(points)
 
     return lagrange(points, vals, x)
 
-def chebyshev_nodes(n):
+def chebyshev_nodes(n, func):
     chebyshev = np.array([])
+
     for i in range(n + 1):
         chebyshev = np.append(chebyshev, np.cos((2 * i + 1) / (2 * (n + 1)) * np.pi))
+    
+    if func != 1:
+        for i in range(n + 1):
+            chebyshev[i] = 2 * np.pi * (chebyshev[i] + 1) / 2
     
     return chebyshev
 
@@ -50,10 +64,10 @@ def zad1():
     y = lagrange(points, vals, x)
     plt.plot(x, y, color="orange", label="Lagrange")
 
-    y = splines(n, x)
+    y = splines(n, 1, x)
     plt.plot(x, y, color="red", label="splines")
 
-    chebyshev = chebyshev_nodes(n)
+    chebyshev = chebyshev_nodes(n, 1)
     che_vals = f1(chebyshev)
 
     plt.scatter(chebyshev, che_vals, color="green")
@@ -66,16 +80,27 @@ def zad1():
     plt.legend()
     plt.show()
 
-def error_plot(func, title):
-    evaluation = np.random.uniform(-1, 1, 500)
+def error_plot(func):
+    if func == 1:
+        a = -1
+        b = 1
+        f = f1
+        title = "Error comparison for Runge's function"
+    else:
+        a = 0
+        b = 2 * np.pi
+        f = f2
+        title = "Error comparison for exponentional function"
+
+    evaluation = np.random.uniform(a, b, 500)
     x = np.linspace(4, 50, 47)
     y = np.array([])
 
     for n in range(4, 51):
-        points = np.linspace(-1, 1, n)
-        vals = func(points)
+        points = np.linspace(a, b, n)
+        vals = f(points)
 
-        error_norm = np.linalg.norm(abs(func(evaluation) - lagrange(points, vals, evaluation)) /\
+        error_norm = np.linalg.norm(abs(f(evaluation) - lagrange(points, vals, evaluation)) /\
             lagrange(points, vals, evaluation))
         y = np.append(y, error_norm)
     
@@ -83,7 +108,7 @@ def error_plot(func, title):
     y = np.array([])
 
     for n in range(4, 51):
-        error_norm = np.linalg.norm(abs(func(evaluation) - splines(n, func, evaluation)) /\
+        error_norm = np.linalg.norm(abs(f(evaluation) - splines(n, func, evaluation)) /\
             splines(n, func, evaluation))
         y = np.append(y, error_norm)
 
@@ -91,10 +116,10 @@ def error_plot(func, title):
     y = np.array([])
 
     for n in range(4, 51):
-        points = chebyshev_nodes(n)
-        vals = func(points)
+        points = chebyshev_nodes(n, func)
+        vals = f(points)
 
-        error_norm = np.linalg.norm(abs(func(evaluation) - lagrange(points, vals, evaluation)) /\
+        error_norm = np.linalg.norm(abs(f(evaluation) - lagrange(points, vals, evaluation)) /\
             lagrange(points, vals, evaluation))
         y = np.append(y, error_norm)
     
@@ -107,8 +132,8 @@ def error_plot(func, title):
     plt.show()
 
 def zad2():
-    #error_plot(f1, "Error comparison for Runge's function")
-    error_plot(f2, "Error comparison for exponentional function")
+    func = 2
+    error_plot(func)
 
 
 zad2()
