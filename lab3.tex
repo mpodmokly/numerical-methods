@@ -4,9 +4,16 @@
 
 \usepackage{graphicx, float, caption, subcaption, amsmath}
 \usepackage{tabularx, multirow, hyperref, enumitem, listings}
+\usepackage{xcolor}
 %\usepackage{minted}
 
-\usepackage{listings, xcolor}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=black,
+    citecolor=black
+}
+
 \definecolor{md-black}{rgb}{0.12, 0.12, 0.12}
 \definecolor{md-teal}{rgb}{0.38, 0.79, 0.69}
 \definecolor{md-mauve}{rgb}{0.76, 0.52, 0.75}
@@ -218,9 +225,17 @@
     Najlepiej uwarunkowaną macierzą jest ta zbudowana z bazy, która zawiera
     przesunięcie oraz przeskalowanie danych wejściowych. Niewielkie różnice między
     wielomianem uogólnionym, wielomianem Lagrange'a i wielomianem Newtona mogą
-    wynikać ze zbyt małego stopnia złożoności wartości wejściowych. \\
+    wynikać z błędów numerycznych w obliczeniach. \\
     Interpolacja wielomianowa, w tym przypadku, wydaje się dobrze estymować wartości
     znajdujące się między węzłami, jednak ekstrapolacja wielomianu do roku 1990
     powoduje znaczne zakłamanie wyniku w okolicy tego punktu. Przy szacowaniu
-    określonych wartości, należy ostrożnie korzystać z danych otrzymanych w wyniku ekstrapolacji wielomianu interpolacyjnego.
+    określonych wartości, należy ostrożnie korzystać z danych otrzymanych w wyniku
+    ekstrapolacji wielomianu interpolacyjnego.
+
+    \section{Bibliografia}
+    \url{https://pl.wikipedia.org/wiki/Interpolacja_(matematyka)} \\
+    \url{https://pl.wikipedia.org/wiki/Interpolacja_wielomianowa} \\
+    \url{https://pl.wikipedia.org/wiki/Posta%C4%87_Newtona_wielomianu} \\
+    \url{https://pl.wikipedia.org/wiki/R%C3%B3%C5%BCnica_dzielona}
+
 \end{document}
