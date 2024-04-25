@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.integrate import quad
 
 YEARS = np.array([1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980],\
                   dtype="float64")
@@ -54,5 +55,46 @@ def zad1(plot = False):
         plt.plot(x, y)
         plt.show()
 
+def T0(x):
+    return 1
+def T1(x):
+    return x
+def T2(x):
+    return 2 * x ** 2 - 1
 
-zad1()
+def f(x):
+    return np.sqrt(x)
+
+def inner_product(f, g, w):
+    integral, _ = quad(lambda x: f(x + 1) * g(x + 1) * w(x + 1), -1, 0)
+    return integral
+
+def weight_func(x):
+    return 1 / np.sqrt(1 - x ** 2)
+
+def coefficient(i):
+    if i == 0:
+        return inner_product(f, T0, weight_func) / np.pi
+    if i == 1:
+        return inner_product(f, T1, weight_func) / (np.pi / 2)
+    if i == 2:
+        return inner_product(f, T2, weight_func) / (np.pi / 2)
+
+def pol(c, x):
+    return c[0] * T0(x) + c[1] * T1(x) + c[2] * T2(x)
+
+
+x = np.linspace(0, 2, 200)
+y = np.sqrt(x)
+plt.plot(x, y)
+
+n = 2
+c = np.array([coefficient(i) for i in range(n + 1)], dtype="float64")
+print(c)
+#c = np.flip(c)
+
+y = pol(c, x - 1)
+plt.plot(x, y)
+plt.show()
+
+#zad1()

@@ -1,4 +1,4 @@
-# numerical-methods
+# Numerical methods
 ## Projects content
 **Lab 1** - error analysis in numerical computing.<br>
 **Lab 2** - linear regression using least squares method.<br>
