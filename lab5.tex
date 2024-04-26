@@ -128,25 +128,48 @@
             c_m
         \end{bmatrix}
     \]
-    Obliczamy $c$ z równania normalnego
+    Obliczamy $c$ z równania normalnego:
     \[
         A^TAc=A^Ty
     \]
     \[
         c=(A^TA)^{-1}A^Ty
     \]
-    Wielomian aproksymacyjny jest postaci
+    Otrzymujemy wielomian aproksymacyjny postaci
     \[
         p(x)=\sum_{j=0}^{n}c_jx^j
     \]
 
     \subsection{Zadanie 2.}
-    Aproksymacja wielomianem drugiego stopnia wymaga trzech
-    wielomiagów Czebyszewa:
+    Mamy funkcję
+    \[
+        f(x)=\sqrt{x}
+    \]
+    Aproksymacja tej funkcji wielomianem drugiego stopnia
+    wymaga trzech pierwszych wielomiagów Czebyszewa:
     \begin{align*}
         & T_0(x) = 1 \\
         & T_1(x) = x \\
         & T_2(x) = 2x^2-1
     \end{align*}
+    Wielomian aproksymacyjny jest postaci
+    \[
+        p(x)=\sum_{k=0}^{n}c_k\phi_k
+    \]
+    Dla wielomianów ortogonalnych $\phi_0,\ldots,\phi_n$
+    problem sprowadza się do znalezienia współczynników
+    $c_0,\ldots,c_n$ kombinacji liniowej. Możemy je wyznaczyć
+    z następującej zależności:
+    \[
+        \begin{bmatrix}
+            \langle \phi_0,\phi_0 \rangle & 0 & \cdots & 0 \\
+            0 & \langle \phi_1,\phi_1 \rangle & \cdots & 0 \\
+            \vdots \\
+            0
+        \end{bmatrix}
+    \]
+    \[
+        c_k=\frac{\langle f,\phi \rangle}{}
+    \]
 
 \end{document}
