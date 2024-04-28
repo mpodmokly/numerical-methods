@@ -74,14 +74,14 @@ def weight_func(x):
 
 def coefficient(i):
     if i == 0:
-        return inner_product(f, T0, weight_func) / np.pi
+        return inner_product(f, T0, weight_func) / inner_product(T0, T0, weight_func)#np.pi
     if i == 1:
-        return inner_product(f, T1, weight_func) / (np.pi / 2)
+        return inner_product(f, T1, weight_func) / inner_product(T1, T1, weight_func)#(np.pi / 2)
     if i == 2:
-        return inner_product(f, T2, weight_func) / (np.pi / 2)
+        return inner_product(f, T2, weight_func) / inner_product(T2, T2, weight_func)#(np.pi / 2)
 
-def pol(c, x):
-    return c[0] * T0(x) + c[1] * T1(x) + c[2] * T2(x)
+def pol_val(c, x):
+    return c[0] * T0(x - 1) + c[1] * T1(x - 1) + c[2] * T2(x - 1)
 
 
 x = np.linspace(0, 2, 200)
@@ -92,8 +92,9 @@ n = 2
 c = np.array([coefficient(i) for i in range(n + 1)], dtype="float64")
 print(c)
 #c = np.flip(c)
+#print(inner_product(T1, T1, weight_func))
 
-y = pol(c, x - 1)
+y = pol_val(c, x)
 plt.plot(x, y)
 plt.show()
 

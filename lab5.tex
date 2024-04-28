@@ -143,7 +143,7 @@
     \subsection{Zadanie 2.}
     Mamy funkcję
     \[
-        f(x)=\sqrt{x}
+        f(x)=\sqrt{x},x \in [0,2]
     \]
     Aproksymacja tej funkcji wielomianem drugiego stopnia
     wymaga trzech pierwszych wielomiagów Czebyszewa:
@@ -156,6 +156,23 @@
     \[
         p(x)=\sum_{k=0}^{n}c_k\phi_k
     \]
+    gdzie
+    \[
+        \phi_k=T_k(x)
+    \]
+    czyli w naszym przypadku
+    \[
+        p(x)=c_0T_0(x)+c_1T_1(x)+c_2T_2(x)
+    \]
+    Zdefiniujmy iloczyn skalarny funkcji w następujący sposób:
+    \[
+        \langle f,g \rangle =\int_{-1}^{1}f(x)g(x)w(x)dx
+    \]
+    W powyższym wzorze $w(x)$ to funkcja wagowa, która w przypadku
+    wielomianów Czebyszewa dana jest wzorem:
+    \[
+        w(x)=\frac{1}{\sqrt{1-x^2}},x \in [-1,1]
+    \]
     Dla wielomianów ortogonalnych $\phi_0,\ldots,\phi_n$
     problem sprowadza się do znalezienia współczynników
     $c_0,\ldots,c_n$ kombinacji liniowej. Możemy je wyznaczyć
@@ -164,12 +181,28 @@
         \begin{bmatrix}
             \langle \phi_0,\phi_0 \rangle & 0 & \cdots & 0 \\
             0 & \langle \phi_1,\phi_1 \rangle & \cdots & 0 \\
-            \vdots \\
-            0
+            \vdots & \vdots & \ddots & \vdots \\
+            0 & 0 & \cdots & \langle \phi_n,\phi_n \rangle
         \end{bmatrix}
+        \begin{bmatrix}
+            c_0 \\
+            c_1 \\
+            \vdots \\
+            c_n
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            \langle f,\phi_0 \rangle \\
+            \langle f,\phi_1 \rangle \\
+            \vdots \\
+            \langle f,\phi_n \rangle
+        \end{bmatrix}
+        \Rightarrow c_k=\frac{\langle f,\phi_k \rangle}{\langle
+        \phi_k, \phi_k \rangle}
     \]
+    Musimy zastosować podstawienie
     \[
-        c_k=\frac{\langle f,\phi \rangle}{}
+        t=x+1
     \]
 
 \end{document}
