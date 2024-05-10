@@ -90,12 +90,13 @@ plt.plot(x, y)
 
 n = 2
 c = np.array([coefficient(i) for i in range(n + 1)], dtype="float64")
-print(c)
+#print(c)
 #c = np.flip(c)
-#print(inner_product(T1, T1, weight_func))
+print(inner_product(T0, T0, weight_func))
 
 y = pol_val(c, x)
+#y = np.polynomial.chebyshev.chebfit()
 plt.plot(x, y)
 plt.show()
 
-#zad1()
+#zad1(plot=True)

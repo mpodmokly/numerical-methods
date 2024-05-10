@@ -1,0 +1,168 @@
+\documentclass[11pt]{scrartcl}
+\usepackage{polski}
+\usepackage[polish]{babel}
+
+\usepackage{graphicx, float, caption, subcaption, amsmath}
+\usepackage{tabularx, multirow, hyperref, enumitem, listings}
+\usepackage{xcolor}
+%\usepackage{minted}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=black,
+    citecolor=black
+}
+
+\definecolor{md-black}{rgb}{0.12, 0.12, 0.12}
+\definecolor{md-teal}{rgb}{0.38, 0.79, 0.69}
+\definecolor{md-mauve}{rgb}{0.76, 0.52, 0.75}
+\definecolor{md-yellow}{rgb}{0.86, 0.86, 0.67}
+\definecolor{md-green}{rgb}{0.13, 0.55, 0.13}
+\definecolor{md-red}{rgb}{0.82, 0.10, 0.14}
+\definecolor{md-purple}{rgb}{0.69, 0.33, 0.73}
+\definecolor{md-orange}{rgb}{0.96, 0.42, 0.18}
+\definecolor{md-gray}{rgb}{0.44, 0.46, 0.51}
+\lstset{
+    language=Python,
+    basicstyle=\color{md-teal}\ttfamily,
+    keywordstyle=\color{md-mauve},
+    commentstyle=\color{md-green},
+    stringstyle=\color{md-red},
+    numbers=left,
+    numberstyle=\small\color{md-gray}\ttfamily,
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{md-black},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=none,
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+    escapeinside={\%*}{*)},
+    numbersep=-10pt,
+    morekeywords={as},
+    classoffset=1,
+    morekeywords={quad},
+    keywordstyle=\color{md-yellow},
+    classoffset=0
+}
+
+\graphicspath{{images/}}
+
+\title{Laboratorium 6 - Kwadratury}
+\author{Mateusz Podmokły - II rok Informatyka WI}
+\date{11 kwiecień 2024}
+
+\begin{document}
+    \maketitle
+    \section{Treść zadania}
+    \textbf{Zadanie 1.} Wiadomo, że
+    \[
+        \int_{0}^{1}\frac{4}{1+x^2}dx=\pi
+    \]
+    Oblicz wartość powyższej całki, korzystając ze złożonych
+    kwadratur otwartej prostokątów (ang. mid-point rule),
+    trapezów i Simpsona. Na przedziale całkowania rozmieść
+    $2^m+1$ równoodległych węzłów. Przyjmij zakres
+    wartości $m$ od 1 do 25. Dla każdej metody narysuj wykres
+    wartości bezwzględnej błędu względnego w zależności od
+    liczby ewaluacji funkcji podcałkowej $n$.
+    \subsection*{}
+    \textbf{Zadanie 2.} Oblicz wartość całki
+    \[
+        \int_{0}^{1}\frac{4}{1+x^2}dx
+    \]
+    metodą Gaussa-Legendre'a. Narysuj wykres wartości bezwzględnej
+    błędu względnego w zależności od liczby ewaluacji funkcji
+    podcałkowej $n$.
+
+    \section{Specyfikacja użytego środowiska}
+    Specyfikacja:
+
+    \begin{itemize}
+        \item Środowisko: Visual Studio Code,
+        \item Język programowania: Python,
+        \item System operacyjny: Microsoft Windows 11,
+        \item Architektura systemu: x64.
+    \end{itemize}
+
+    \section{Rozwiązanie problemu}
+    \subsection{Biblioteki}
+    W realizacji rozwiązania wykorzystane zostały następujące
+    biblioteki:
+    \begin{lstlisting}
+        import numpy as np
+    \end{lstlisting}
+
+    \subsection{Zadanie 1.}
+    Każda z metod całkowania numerycznego przybliża całkę w nieco
+    inny sposób. Poniżej krótkie wyjaśnienie każdej z użytych
+    metod.
+    \subsubsection{Metoda prostokątów}
+    \[
+        \int_{a}^{b}f(x)dx \approx \sum_{i=0}^{n-1}hf
+        \left( a+ \left( i+\frac{1}{2} \right) \cdot h \right)
+    \]
+    \[
+        h=\frac{b-a}{n}
+    \]
+
+    \subsubsection{Metoda trapezów}
+    \[
+        \int_{a}^{b}f(x)dx \approx \sum_{i=0}^{n-1} h \cdot
+        \frac{f(a+h \cdot i)+f(a+ (i+1) \cdot h)}{2}
+    \]
+    \[
+        h=\frac{b-a}{n}
+    \]
+    \subsubsection{Metoda Simpsona}
+    Dla każdego z $n$ podprzedziałów $[a,b]$ wyznaczamy
+    współczynniki $c_1,c_2,c_3$ paraboli w punktach $a,b$
+    oraz
+    \[
+        c=\frac{x_0+x_1}{2}
+    \]
+    \[
+        \begin{bmatrix}
+            a^2 & a & 1 \\
+            c^2 & c & 1 \\
+            b^2 & b & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+            c_1 \\
+            c_2 \\
+            c_3
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            f(a) \\
+            f(c) \\
+            f(b)
+        \end{bmatrix}
+    \]
+    Znając analityczny wzór na całkę funkcji kwadratowej
+    możemy ją obliczyć:
+    \[
+        \int_{a}^{b}c_1x^2+c_2x+c_3dx=\frac{1}{3}c_1b^3+
+        \frac{1}{2}c_2b+c_3b-\frac{1}{3}c_1a^3-
+        \frac{1}{2}c_2a-c_3a
+    \]
+    \subsection{Zadanie 2.}
+    \subsubsection{Metoda Gaussa-Legendre'a}
+    Metoda oblicza wartość całki na przedziale $[-1,1]$
+    w następujący sposób:
+    \[
+        \int_{a}^{b}f(x)dx \approx \sum_{i=1}^{n}w_if(x_i)
+    \]
+    gdzie $w_i$ to wagi kwadratury, a $x_i$ to pierwiastki
+    i-tego wielomianu Legendre'a. Można je wyznaczyć korzystając
+    z funkcji \texttt{np.polynomial.legendre.leggauss}.
+
+    \section{Przedstawienie wyników}
+    
+
+\end{document}
