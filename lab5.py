@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.integrate import quad
 
 YEARS = np.array([1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980],\
                   dtype="float64")
@@ -48,11 +47,15 @@ def zad1(plot = False):
         m = 2
         pol = approximation(m)
         plt.scatter(YEARS, POPULATION)
-        plt.scatter(1990, pol(1990))
+        plt.scatter(1990, pol(1990), label="extrapolation to 1990")
         x = np.linspace(1900, 1990, 1000)
         y = pol(x)
         
         plt.plot(x, y)
+        plt.xlabel("Year")
+        plt.ylabel("Population")
+        plt.title("US population approximation")
+        plt.legend()
         plt.show()
 
 def T0(x):
@@ -65,38 +68,25 @@ def T2(x):
 def f(x):
     return np.sqrt(x)
 
-def inner_product(f, g, w):
-    integral, _ = quad(lambda x: f(x + 1) * g(x + 1) * w(x + 1), -1, 0)
-    return integral
+def zad2():
+    n = 2
+    nodes = np.linspace(0, 2, 100)
+    vals = f(nodes)
+    c = np.polynomial.chebyshev.chebfit(nodes, vals, n)
 
-def weight_func(x):
-    return 1 / np.sqrt(1 - x ** 2)
+    x = np.linspace(0, 2, 200)
+    y = f(x)
+    plt.plot(x, y, label="sqrt(x)")
 
-def coefficient(i):
-    if i == 0:
-        return inner_product(f, T0, weight_func) / inner_product(T0, T0, weight_func)#np.pi
-    if i == 1:
-        return inner_product(f, T1, weight_func) / inner_product(T1, T1, weight_func)#(np.pi / 2)
-    if i == 2:
-        return inner_product(f, T2, weight_func) / inner_product(T2, T2, weight_func)#(np.pi / 2)
+    y = np.polynomial.chebyshev.Chebyshev(c)(x)
+    plt.plot(x, y, label="approximation")
 
-def pol_val(c, x):
-    return c[0] * T0(x - 1) + c[1] * T1(x - 1) + c[2] * T2(x - 1)
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.legend()
+    plt.title("f(x) = sqrt(x) polynomial approximation")
+    plt.show()
 
-
-x = np.linspace(0, 2, 200)
-y = np.sqrt(x)
-plt.plot(x, y)
-
-n = 2
-c = np.array([coefficient(i) for i in range(n + 1)], dtype="float64")
-#print(c)
-#c = np.flip(c)
-print(inner_product(T0, T0, weight_func))
-
-y = pol_val(c, x)
-#y = np.polynomial.chebyshev.chebfit()
-plt.plot(x, y)
-plt.show()
 
 #zad1(plot=True)
+zad2()

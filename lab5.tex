@@ -4,7 +4,7 @@
 
 \usepackage{graphicx, float, caption, subcaption, amsmath}
 \usepackage{tabularx, multirow, hyperref, enumitem, listings}
-\usepackage{xcolor}
+\usepackage{xcolor, verbatim}
 %\usepackage{minted}
 
 \hypersetup{
@@ -105,7 +105,6 @@
     \begin{lstlisting}
         import numpy as np
         import matplotlib.pyplot as plt
-        from scipy.integrate import quad
     \end{lstlisting}
 
     \subsection{Zadanie 1.}
@@ -159,7 +158,7 @@
         f(x)=\sqrt{x},x \in [0,2]
     \]
     Aproksymacja tej funkcji wielomianem drugiego stopnia
-    wymaga trzech pierwszych wielomiagów Czebyszewa:
+    wymaga trzech pierwszych wielomianów Czebyszewa:
     \begin{align*}
         & T_0(x) = 1 \\
         & T_1(x) = x \\
@@ -177,70 +176,161 @@
     \[
         p(x)=c_0T_0(x)+c_1T_1(x)+c_2T_2(x)
     \]
-    Zdefiniujmy iloczyn skalarny funkcji w następujący sposób:
+    \begin{comment}
+        Zdefiniujmy iloczyn skalarny funkcji w następujący sposób:
+        \[
+            \langle f,g \rangle =\int_{-1}^{1}f(x)g(x)w(x)dx
+        \]
+        W powyższym wzorze $w(x)$ to funkcja wagowa, która w przypadku
+        wielomianów Czebyszewa dana jest wzorem:
+        \[
+            w(x)=\frac{1}{\sqrt{1-x^2}},x \in [-1,1]
+        \]
+        Dla wielomianów ortogonalnych $\phi_0,\ldots,\phi_n$
+        problem sprowadza się do znalezienia współczynników
+        $c_0,\ldots,c_n$ kombinacji liniowej. Możemy je wyznaczyć
+        z następującej zależności:
+        \[
+            \begin{bmatrix}
+                \langle \phi_0,\phi_0 \rangle & 0 & \cdots & 0 \\
+                0 & \langle \phi_1,\phi_1 \rangle & \cdots & 0 \\
+                \vdots & \vdots & \ddots & \vdots \\
+                0 & 0 & \cdots & \langle \phi_n,\phi_n \rangle
+            \end{bmatrix}
+            \begin{bmatrix}
+                c_0 \\
+                c_1 \\
+                \vdots \\
+                c_n
+            \end{bmatrix}
+            =
+            \begin{bmatrix}
+                \langle f,\phi_0 \rangle \\
+                \langle f,\phi_1 \rangle \\
+                \vdots \\
+                \langle f,\phi_n \rangle
+            \end{bmatrix}
+            \Rightarrow c_k=\frac{\langle f,\phi_k \rangle}{\langle
+            \phi_k, \phi_k \rangle}
+        \]
+        Musimy zastosować podstawienie
+        \[
+            t=x+1
+        \]
+    \end{comment}
+    Współczynniki $c_k$ zostały wyznaczone z wykorzystaniem funkcji
     \[
-        \langle f,g \rangle =\int_{-1}^{1}f(x)g(x)w(x)dx
+        \texttt{np.polynomial.chebyshev.chebfit}
     \]
-    W powyższym wzorze $w(x)$ to funkcja wagowa, która w przypadku
-    wielomianów Czebyszewa dana jest wzorem:
-    \[
-        w(x)=\frac{1}{\sqrt{1-x^2}},x \in [-1,1]
-    \]
-    Dla wielomianów ortogonalnych $\phi_0,\ldots,\phi_n$
-    problem sprowadza się do znalezienia współczynników
-    $c_0,\ldots,c_n$ kombinacji liniowej. Możemy je wyznaczyć
-    z następującej zależności:
-    \[
-        \begin{bmatrix}
-            \langle \phi_0,\phi_0 \rangle & 0 & \cdots & 0 \\
-            0 & \langle \phi_1,\phi_1 \rangle & \cdots & 0 \\
-            \vdots & \vdots & \ddots & \vdots \\
-            0 & 0 & \cdots & \langle \phi_n,\phi_n \rangle
-        \end{bmatrix}
-        \begin{bmatrix}
-            c_0 \\
-            c_1 \\
-            \vdots \\
-            c_n
-        \end{bmatrix}
-        =
-        \begin{bmatrix}
-            \langle f,\phi_0 \rangle \\
-            \langle f,\phi_1 \rangle \\
-            \vdots \\
-            \langle f,\phi_n \rangle
-        \end{bmatrix}
-        \Rightarrow c_k=\frac{\langle f,\phi_k \rangle}{\langle
-        \phi_k, \phi_k \rangle}
-    \]
-    Musimy zastosować podstawienie
-    \[
-        t=x+1
-    \]
+    a następnie wielomian $p(x)$ z funkcji
+    \texttt{np.polynomial.chebyshev.Chebyshev}.
 
     \section{Przedstawienie wyników}
     \subsection{Zadanie 1.}
+    W poniższej tabeli przedstawione zostały przywidywane przez wielomian
+    aproksymacyjny wartości populacji w roku 1990 dla danego stopnia
+    wielomianu $m$ oraz błąd względny tej aproksymacji.
+    
+    \begin{table}[H]
+        \centering
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{m} & \textbf{Przewidywana populacja} &
+            \textbf{Błąd względny} \\
+            \hline
+            0 & 143 369 177 & 42.35\% \\
+            \hline
+            1 & 235 808 109 & 5.19\% \\
+            \hline
+            \textbf{2} & \textbf{254 712 944} & \textbf{2.41\%} \\
+            \hline
+            3 & 261 378 612 & 5.09\% \\
+            \hline
+            4 & -116 331 273 & 146.77\% \\
+            \hline
+            5 & 472 089 589 & 89.82\% \\
+            \hline
+            6 & 1 269 697 652 & 410.51\% \\
+            \hline
+        \end{tabular}
+        \caption{Porównanie błędu dla różnych stopni wielomianu.}
+    \end{table}
+
+    \subsection*{}
+    Najlepszym przybliżeniem wartości dla roku 1990 okazał się wielomian
+    aproksymacyjny stopnia 2 z błędęm względnym wynoszącym 2.41\%. \\
+    Poniższa tabela przedstawia wartości kryterium informacyjnego Akaikego
+    (AIC) dla danego stopnia wielomianu.
+
+    \begin{table}[H]
+        \centering
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabular}{|c|c|}
+            \hline
+            \textbf{m} & \textbf{AIC} \\
+            \hline
+            0 & 340.79 \\
+            \hline
+            1 & 308.83 \\
+            \hline
+            \textbf{2} & \textbf{299.23} \\
+            \hline
+            3 & 304.66 \\
+            \hline
+            4 & 400.71 \\
+            \hline
+            5 & 418.88 \\
+            \hline
+            6 & 517.97 \\
+            \hline
+        \end{tabular}
+        \caption{Kryterium informacyjne Akaikego.}
+    \end{table}
+    
+    \subsection*{}
+    Przewidywania kryterium informacyjnego Akaikego pokrywają się
+    z obserwacjami ekstrapolacji wielomianu i także wskazują wielomian
+    stopnia 2 jako najbardziej optymalny.
+
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.8\linewidth]{approx.png}
-        \caption{m=2}
+        \includegraphics[width=0.8\linewidth]{approx1.png}
+        \caption{Aproksymacja wielomianem stopnia 2.}
     \end{figure}
 
-    m=0 val: 143369177 err: 42.35\% \\
-    m=1 val: 235808109 err: 5.19\% \\
-    \textbf{m=2 val: 254712944 err: 2.41\%} \\
-    m=3 val: 261378612 err: 5.09\%\ \\
-    m=4 val: -116331273 err: 146.77\% \\
-    m=5 val: 472089589 err: 89.82\% \\
-    m=6 val: 1269697652 err: 410.51\% \\
-    m=0 AIC = 340.79 \\
-    m=1 AIC = 308.83 \\
-    \textbf{m=2 AIC = 299.23} \\
-    m=3 AIC = 304.66 \\
-    m=4 AIC = 400.71 \\
-    m=5 AIC = 418.88 \\
-    m=6 AIC = 517.97
-
     \subsection{Zadanie 2.}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{approx2.png}
+        \caption{Aproksymacja wielomianowa funkcji $f(x)=\sqrt{x}$.}
+    \end{figure}
 
+    \section{Wnioski}
+    \subsection*{Zadanie 1.}
+    W tym zadaniu najdokładniejsza okazała się aproksymacja wielomianem
+    stopnia 2. Niższe stopnie nie były w stanie uwzględnić zmienności
+    danych, natomiast wyższe były zbyt podatne na szum. Kryterium
+    informacyjne Akaikego jako najbardziej optymalny stopień wielomianu
+    także wskazało stopień 2 (najmniejsza wartość AIC), zatem może być ono
+    przydatne przy wyborze stopnia wielomianu aproksymacyjnego.
+
+    \subsection*{Zadanie 2.}
+    Aproksymacja wielomianami Czebyszewa stopnia 2 wydaje się dobrze
+    przybliżać funkcję $f(x)=\sqrt{x}$ na przedziale $[0,2]$. Takie
+    przybliżenie może uprościć niektóre obliczenia i zmniejszyć błędy
+    numeryczne.
+
+    \subsection*{Podsumowanie}
+    Aproksymacja wielomianowa może być przydatna do przewidywania wartości
+    na podstawie wcześniejszych obserwacji, a także do przekształcenia
+    funkcji do prostszej i bardziej przystępnej postaci, zależnie od potrzeb.
+    Należy jednak pamiętać, aby odpowiednio dobrać stopień wielomianu
+    aproksymacyjnego, tak, żeby wynik odpowiednio odzwierciedlał dane.
+
+    \section{Bibliografia}
+    \url{https://pl.wikipedia.org/wiki/Wielomiany_Czebyszewa} \\
+    \url{https://pl.wikipedia.org/wiki/Aproksymacja_%C5%9Bredniokwadratowa} \\
+    \url{http://wygasz.edu.pl/ludzie/szewczuk/mn_data/wyklad4.pdf} \\
+    \url{https://pl.wikipedia.org/wiki/Aproksymacja_wielomianowa}
 \end{document}
