@@ -4,5 +4,5 @@
 **Lab 2** - linear regression using least squares method.<br>
 **Lab 3** - polynomial interpolation.<br>
 **Lab 4** - Runge phenomenon.<br>
-**Lab 5** - 🚧 under construction 🚧<br>
+**Lab 5** - polynomial approximation.<br>
 **Lab 6** - 🚧 under construction 🚧

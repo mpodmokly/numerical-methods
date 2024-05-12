@@ -46,7 +46,7 @@
     numbersep=-10pt,
     morekeywords={as},
     classoffset=1,
-    morekeywords={quad},
+    morekeywords={quad, trapz, simps},
     keywordstyle=\color{md-yellow},
     classoffset=0
 }
@@ -96,6 +96,9 @@
     biblioteki:
     \begin{lstlisting}
         import numpy as np
+        import matplotlib.pyplot as plt
+        from scipy.integrate import trapz
+        from scipy.integrate import simps
     \end{lstlisting}
 
     \subsection{Zadanie 1.}
@@ -103,66 +106,81 @@
     inny sposób. Poniżej krótkie wyjaśnienie każdej z użytych
     metod.
     \subsubsection{Metoda prostokątów}
+    Całka została obliczona według następującego wzoru:
     \[
         \int_{a}^{b}f(x)dx \approx \sum_{i=0}^{n-1}hf
         \left( a+ \left( i+\frac{1}{2} \right) \cdot h \right)
     \]
+    gdzie
     \[
         h=\frac{b-a}{n}
     \]
 
     \subsubsection{Metoda trapezów}
+    Do obliczenia całki metodą trapezów została wykorzystana funkcja
+    z biblioteki \texttt{SciPy}
     \[
-        \int_{a}^{b}f(x)dx \approx \sum_{i=0}^{n-1} h \cdot
-        \frac{f(a+h \cdot i)+f(a+ (i+1) \cdot h)}{2}
-    \]
-    \[
-        h=\frac{b-a}{n}
+        \texttt{scipy.integrate.trapz}
     \]
     \subsubsection{Metoda Simpsona}
-    Dla każdego z $n$ podprzedziałów $[a,b]$ wyznaczamy
-    współczynniki $c_1,c_2,c_3$ paraboli w punktach $a,b$
-    oraz
+    Do obliczenia całki metodą Simpsona została wykorzystana funkcja
+    z biblioteki \texttt{SciPy}
     \[
-        c=\frac{x_0+x_1}{2}
+        \texttt{scipy.integrate.simps}
     \]
-    \[
-        \begin{bmatrix}
-            a^2 & a & 1 \\
-            c^2 & c & 1 \\
-            b^2 & b & 1
-        \end{bmatrix}
-        \begin{bmatrix}
-            c_1 \\
-            c_2 \\
-            c_3
-        \end{bmatrix}
-        =
-        \begin{bmatrix}
-            f(a) \\
-            f(c) \\
-            f(b)
-        \end{bmatrix}
-    \]
-    Znając analityczny wzór na całkę funkcji kwadratowej
-    możemy ją obliczyć:
-    \[
-        \int_{a}^{b}c_1x^2+c_2x+c_3dx=\frac{1}{3}c_1b^3+
-        \frac{1}{2}c_2b+c_3b-\frac{1}{3}c_1a^3-
-        \frac{1}{2}c_2a-c_3a
-    \]
+
     \subsection{Zadanie 2.}
     \subsubsection{Metoda Gaussa-Legendre'a}
     Metoda oblicza wartość całki na przedziale $[-1,1]$
     w następujący sposób:
     \[
-        \int_{a}^{b}f(x)dx \approx \sum_{i=1}^{n}w_if(x_i)
+        \int_{-1}^{1}f(x)dx \approx \sum_{i=1}^{n}w_if(x_i)
     \]
     gdzie $w_i$ to wagi kwadratury, a $x_i$ to pierwiastki
     i-tego wielomianu Legendre'a. Można je wyznaczyć korzystając
-    z funkcji \texttt{np.polynomial.legendre.leggauss}.
+    z funkcji \texttt{np.polynomial.legendre.leggauss}. \\
+    Całka w zadaniu zdefiniowana jest na przedziale $[0,1]$, więc
+    musimy zastosować podstawienie
+    \[
+        x=\frac{1}{2}t+\frac{1}{2}
+    \]
+    aby uzyskać przedział całkowania $[-1,1]$. Po obliczeniu całki
+    należy przywrócić początkową szerokość przedziału dzieląc wynik
+    przez 2. Wtedy wzór przyjmuje postać
+    \[
+        \int_{0}^{1}f(x)dx \approx \frac{1}{2}\sum_{i=1}^{n}w_i
+            f \left( \frac{1}{2}t+\frac{1}{2} \right)
+    \]
 
     \section{Przedstawienie wyników}
-    
+    \subsection{Zadanie 1.}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{integration_err.png}
+        \caption{Wartości błędu względnego dla różnych metod
+        całkowania.}
+    \end{figure}
+
+    Od $n \approx 10^7$, czyli $h \approx 10^{-7}$, zwiększanie
+    wielkości kroku $h$ nie zmniejsza już błędu kwadratury. Pomiary
+    z Laboratorium 1. wynosiły $h_{min} \approx 10^{-8}$ oraz $h_{min}
+    \approx 10^{-6}$. Wartości $h_{min}$ z obydwu laboratoriów są do
+    siebie zbliżone.
+
+    \subsection{Zadanie 2.}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{gauss-legendre_err.png}
+        \caption{Wartości błędu względnego dla metody
+        Gaussa-Legendre'a.}
+    \end{figure}
+
+    \section{Wnioski}
+
+    \section{Bibliografia}
+    \url{https://pl.wikipedia.org/wiki/Ca%C5%82kowanie_numeryczne} \\
+    \url{https://pl.wikipedia.org/wiki/Kwadratury_Gaussa} \\
+    \url{https://pl.wikipedia.org/wiki/Wielomiany_Legendre%E2%80%99a} \\
+    \url{https://www.fuw.edu.pl/~jnareb/zajecia/int-gauss.pdf}
 
 \end{document}
