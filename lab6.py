@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import trapz
 from scipy.integrate import simps
+from scipy.stats import linregress
 
 def f(x):
     return 4 / (1 + x ** 2)
@@ -41,7 +42,32 @@ def gauss_legendre(n):
     integral = np.sum(weights * f(t)) / 2
     return integral
 
-def zad1():
+def zad1(convergence = False):
+    m_max = 10
+    n = 2 ** m_max
+    x_n = np.linspace(1, n, m_max)
+    err_rectangles = np.array([abs(rectangles(m) - np.pi) / np.pi\
+                    for m in range(1, m_max + 1)])
+    err_trapezes = np.array([abs(trapezes(m) - np.pi) / np.pi\
+                    for m in range(1, m_max + 1)])
+    err_simpson = np.array([abs(simpson(m) - np.pi) / np.pi\
+                    for m in range(1, m_max + 1)])
+    
+    x_n = np.log10(x_n)
+    err_rectangles = np.log10(err_rectangles)
+    err_trapezes = np.log10(err_trapezes)
+    err_simpson = np.log10(err_simpson)
+
+    slope_rectangles, _, _, _, _ = linregress(x_n, err_rectangles)
+    slope_trapezes, _, _, _, _ = linregress(x_n, err_trapezes)
+    slope_simpson, _, _, _, _ = linregress(x_n, err_simpson)
+    print(f"rectangles conv: {round(slope_rectangles, 2)}")
+    print(f"trapezes conv: {round(slope_trapezes, 2)}")
+    print(f"Simpson conv: {round(slope_simpson, 2)}")
+
+    if convergence:
+        return
+
     m_max = 25
     n = 2 ** m_max
     x = np.linspace(1, n, m_max)
@@ -57,7 +83,7 @@ def zad1():
     err = np.array([abs(simpson(m) - np.pi) / np.pi\
                     for m in range(1, m_max + 1)])
     plt.plot(x, err, label="Simpson method")
-
+    
     plt.xscale("log")
     plt.yscale("log")
     plt.xlabel("n")
@@ -81,4 +107,4 @@ def zad2():
     plt.show()
 
 
-zad1()
+zad1(convergence = True)

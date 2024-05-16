@@ -46,7 +46,7 @@
     numbersep=-10pt,
     morekeywords={as},
     classoffset=1,
-    morekeywords={quad, trapz, simps},
+    morekeywords={quad, trapz, simps, linregress},
     keywordstyle=\color{md-yellow},
     classoffset=0
 }
@@ -99,6 +99,7 @@
         import matplotlib.pyplot as plt
         from scipy.integrate import trapz
         from scipy.integrate import simps
+        from scipy.stats import linregress
     \end{lstlisting}
 
     \subsection{Zadanie 1.}
@@ -129,6 +130,27 @@
         \texttt{scipy.integrate.simps}
     \]
 
+    \subsubsection{Rząd zbieżności}
+    Rząd zbieżności to wartość współczynnika nachylenia prostej
+    dopasowanej do wykresu logarytmicznego błędu względnego
+    każdej z metod. Został obliczony w następujący sposób:
+    \[
+        x_n=log_{10}(2^n)
+    \]
+    \[
+        y_n=log_{10}\left( \frac{|I_n-\pi|}{\pi} \right)
+    \]
+    gdzie
+    \[
+        n=1,\ldots,10
+    \]
+    a $I_n$ to wartość całki numerycznej dla danego $n$. \\
+    Następnie wartość współczynnika została uzyskana za pomocą
+    funkcji z biblioteki \texttt{SciPy}
+    \[
+        \texttt{scipy.stats.linregress}
+    \]
+
     \subsection{Zadanie 2.}
     \subsubsection{Metoda Gaussa-Legendre'a}
     Metoda oblicza wartość całki na przedziale $[-1,1]$
@@ -154,6 +176,7 @@
 
     \section{Przedstawienie wyników}
     \subsection{Zadanie 1.}
+    \subsubsection{Błąd względny dla każdej z metod}
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.8\linewidth]{integration_err.png}
@@ -167,6 +190,23 @@
     \approx 10^{-6}$. Wartości $h_{min}$ z obydwu laboratoriów są do
     siebie zbliżone.
 
+    \subsubsection{Rząd zbieżności}
+    Wartości rzędu zbieżności wyznaczone dla każdej z metod
+    wynoszą odpowiednio:
+    \begin{align*}
+        &p_{rect} \approx 1.55 \\
+        &p_{trapz} \approx 1.73 \\
+        &p_{simps} \approx 4.22 \\
+    \end{align*}
+    Warości przewidywane przez teorię:
+    \begin{align*}
+        &p_{rect} = 2 \\
+        &p_{trapz} = 2 \\
+        &p_{simps} = 4 \\
+    \end{align*}
+    Pomiędzy wyznaczonymi wartościami, a teoretycznymi są pewne
+    rozbieżności, jednak w przybliżeniu wyniki się zgadzają.
+
     \subsection{Zadanie 2.}
     \begin{figure}[H]
         \centering
@@ -176,6 +216,30 @@
     \end{figure}
 
     \section{Wnioski}
+    Najdokładniejsze okazało się całkowanie metodą Simpsona.
+    Przybliża ona funkcję w najdokładniejszy sposób, ponieważ
+    korzysta z dopasowania paraboli do każdego podprzdziału
+    funkcji. Metoda prostokątów i metoda trapezów w tym przypadku
+    zachowywały się w podobny sposób. Być może funkcja była zbyt
+    mało zmienna, żeby zauważyć wyraźną różnicę między tymi dwoma
+    metodami. \\
+    Minimalna wartość błędu obliczeniowego z Laboratorium 1.
+    zgadza się z wartością otrzymaną przez całkowanie numeryczne
+    każdą z metod i wynosi $h \approx 10^{-7}$. \\
+    Rząd zbieżności wynaczony dla każdej z użytych metod odbiega
+    delikatnie od wartości przywidywanych przez teorię. Może to
+    w pewnym stopniu wynikać z błędów numerycznych powstałych
+    przy wyznaczaniu wartości całek. \\
+    Porównując wykresy trzech użytych metod całkowania z wykresem
+    metody Gaussa-Legendre'a można zauważyć, że jest ona znacznie
+    dokładniejsza (mniejsze wartości błędu względnego). W tym
+    przypadku błąd numeryczny zaczyna przeważać nad błędem metody
+    od wartości $n=11$.
+    \subsection*{Podsumowanie}
+    Wybrane metody całkowania numerycznego wydają się być bardzo
+    przydatne w obliczeniach, należy jednak pamiętać o ich
+    ograniczeniach. Mając na uwadze generowane przez nie błędy
+    można korzystać zgodnie z potrzebami.
 
     \section{Bibliografia}
     \url{https://pl.wikipedia.org/wiki/Ca%C5%82kowanie_numeryczne} \\
