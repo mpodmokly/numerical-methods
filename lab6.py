@@ -61,6 +61,10 @@ def zad1(convergence = False):
     slope_rectangles, _, _, _, _ = linregress(x_n, err_rectangles)
     slope_trapezes, _, _, _, _ = linregress(x_n, err_trapezes)
     slope_simpson, _, _, _, _ = linregress(x_n, err_simpson)
+    slope_rectangles = -slope_rectangles
+    slope_trapezes = -slope_trapezes
+    slope_simpson = -slope_simpson
+
     print(f"rectangles conv: {round(slope_rectangles, 2)}")
     print(f"trapezes conv: {round(slope_trapezes, 2)}")
     print(f"Simpson conv: {round(slope_simpson, 2)}")
