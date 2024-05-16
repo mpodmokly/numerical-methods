@@ -7,6 +7,3 @@
 *.log
 *.out
 *.gz
-
-*.dat
-*.labels
