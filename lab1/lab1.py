@@ -96,4 +96,4 @@ def zad2():
     plt.legend()
     plt.show()
 
-zad2()
+zad1()

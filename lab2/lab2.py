@@ -16,9 +16,9 @@ def show_plot(data_name):
     plt.ylabel("Value")
     plt.show()
 
-df_train = pd.read_csv("breast-cancer-train.dat", header=None)
-df_validate = pd.read_csv("breast-cancer-validate.dat", header=None)
-columns = pd.read_csv("breast-cancer.labels", header=None)
+df_train = pd.read_csv("lab2/breast-cancer-train.dat", header=None)
+df_validate = pd.read_csv("lab2/breast-cancer-validate.dat", header=None)
+columns = pd.read_csv("lab2/breast-cancer.labels", header=None)
 
 df_train.columns = columns.iloc[:, 0].tolist()
 df_validate.columns = columns.iloc[:, 0].tolist()
