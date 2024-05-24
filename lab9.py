@@ -1,0 +1,1 @@
+# convergence = consistency + stability

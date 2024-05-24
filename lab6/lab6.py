@@ -111,4 +111,4 @@ def zad2():
     plt.show()
 
 
-zad1(convergence = True)
+zad1(convergence = False)
