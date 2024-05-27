@@ -1,8 +1,8 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from scipy.integrate import quad_vec
 from scipy.integrate import trapz
 from scipy.integrate import simps
-from scipy.integrate import quad_vec
 
 EVALS = 14
 
@@ -115,6 +115,10 @@ def zad1():
     plt.legend()
     plt.show()
 
+def zad2_int(x0, a):
+    result = np.arctan((1 - x0) / np.sqrt(a)) + np.arctan(x0 / np.sqrt(a))
+    return result / np.sqrt(a)
+
 def zad2(f):
     m_max = 16
     n = 2 ** m_max + 1
@@ -124,7 +128,12 @@ def zad2(f):
     elif f == f2:
         ans = - 4 / 9
     elif f == f3:
-        ans = 
+        a = 0.001
+        b = 0.004
+
+        ans = zad2_int(0.3, a)
+        ans += zad2_int(0.9, b)
+        ans -= 6
     else:
         print("Function error")
         return
@@ -158,4 +167,5 @@ def zad2(f):
     plt.show()
 
 
+#zad1()
 zad2(f3)

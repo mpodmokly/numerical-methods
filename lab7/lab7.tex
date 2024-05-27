@@ -110,17 +110,80 @@
         import numpy as np
         from matplotlib import pyplot as plt
         from scipy.integrate import quad_vec
+        from scipy.integrate import trapz
+        from scipy.integrate import simps
     \end{lstlisting}
 
-    \subsection{Zadanie 1.}
+    \subsection{Obliczenie całek}
     Do obliczenia całki metodą adaptacyjną trapezów
     i Gaussa-Kronroda wykorzystana została funkcja
     z biblioteki \texttt{SciPy}
     \[
         \texttt{scipy.integrate.quad\_vec}
     \]
-    z parametrem $\texttt{epsrel} \in [10^0,10^{-14}]$.
+    z parametrem $\texttt{epsrel} \in [10^0,10^{-14}]$. Całki
+    z poprzedniego laboratorium uzyskano przy pomocy funkcji
+    z biblioteki \texttt{SciPy}
+    \[
+        \texttt{scipy.integrate.trapz}
+    \]
+    oraz
+    \[
+        \texttt{scipy.integrate.simps}.
+    \]
+    Natomiast metoda Gaussa-Legendre'a została uzyskana
+    w analogiczny sposób jak w poprzednim laboratorium, a do
+    wyznaczenia parametrów kwadratury posłużyła funkcja
+    z biblioteki \texttt{NumPy}
+    \[
+        \texttt{np.polynomial.legendre.leggauss}.
+    \]
+
+    \section{Przedstawienie wyników}
+    \subsection{Zadanie 1.}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{integration2_1.png}
+        \caption{Wartości błędu względnego dla różnych metod
+        całkowania.}
+    \end{figure}
+    Najdokładniejszą metodą okazała się metoda adaptacyjna
+    Gaussa-Kronroda, do tego stopnia, że w obliczeniach nie została
+    zarejestrowana żadna wartość błędu. Drugą w kolejności jest metoda
+    adaptacyjna trapezów. Pozostałe zachowywały się podobnie i miały
+    nieco gorszą skuteczność.
 
     \subsection{Zadanie 2.}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{integration2_2.png}
+        \caption{Wartości błędu względnego dla różnych metod
+            całkowania funkcji 1.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{integration2_3.png}
+        \caption{Wartości błędu względnego dla różnych metod
+            całkowania funkcji 2.}
+    \end{figure}
+
+    Dla obydwu całkowanych funkcji najdokładniejszą metodą ponownie
+    okazała się metoda adaptacyjna Gaussa-Kronroda, a za nią, jednak
+    już nie tak wysoce dokładna, metoda adaptacyjna trapezów.
+
+    \section{Wnioski}
+    Całkowanie numeryczne przy pomocy kwadratur adaptacyjnych jest
+    znacznie dokładniejsze niż klasyczne kwadratury. Wynika to
+    z odpowiedniego doboru punktów ewaluacji w przedziałach bardziej
+    narażonych na zmienności funkcji. Dzięki temu można dokładnie
+    oraz wydajnie obliczać całki nawet skomplikowanych funkcji. Jest
+    to przydatne narzędzie obliczeniowe, jednak należy pamiętać, że
+    każda metoda numeryczna może byc obarczona błędami.
+
+    \section{Bibliografia}
+    \url{https://en.wikipedia.org/wiki/Gauss\%E2\%80\%93
+        Kronrod_quadrature_formula} \\
+    \url{https://en.wikipedia.org/wiki/Adaptive_quadrature}
 
 \end{document}
