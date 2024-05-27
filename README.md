@@ -6,4 +6,5 @@
 **Lab 4** - Runge phenomenon<br>
 **Lab 5** - polynomial approximation<br>
 **Lab 6** - quadratures<br>
-**Lab 7** - 🚧 under construction 🚧
+**Lab 7** - adaptive quadratures<br>
+**Lab 8** - 🚧 under construction 🚧
