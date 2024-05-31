@@ -1,4 +1,4 @@
-\documentclass[11pt]{scrartcl}
+\documentclass[11pt, leqno]{scrartcl}
 \usepackage{polski}
 \usepackage[polish]{babel}
 
@@ -46,7 +46,8 @@
     numbersep=-10pt,
     morekeywords={as},
     classoffset=1,
-    morekeywords={quad, quad_vec, trapz, simps, linregress},
+    morekeywords={quad, quad_vec, trapz, simps, linregress,
+        newton},
     keywordstyle=\color{md-yellow},
     classoffset=0
 }
@@ -60,6 +61,55 @@
 \begin{document}
     \maketitle
     \section{Treść zadania}
-    \textbf{Zadanie 1.}
+    \textbf{Zadanie 1.} Dla poniższych funkcji i punktów początkowych
+    metoda Newtona zawodzi. Wyjaśnij dlaczego. Następnie znajdź
+    pierwiastki, modyfikując wywołanie funkcji
+    \texttt{scipy.optimize.newton} lub używając innej metody.
+    \begin{enumerate}
+        \item $f(x)=x^3-5x$, $x_0=1$
+        \item $f(x)=x^3-3x+1$, $x_0=1$
+        \item $f(x)=2-x^5$, $x_0=0.01$
+        \item $f(x)=x^4-4.29x^2-5.29$, $x_0=0.8$
+    \end{enumerate}
+    \textbf{Zadanie 2.}
+
+    \section{Specyfikacja użytego środowiska}
+    Specyfikacja:
+
+    \begin{itemize}
+        \item Środowisko: Visual Studio Code,
+        \item Język programowania: Python,
+        \item System operacyjny: Microsoft Windows 11,
+        \item Architektura systemu: x64.
+    \end{itemize}
+
+    \section{Rozwiązanie problemu}
+    \subsection{Biblioteki}
+    W realizacji rozwiązania wykorzystane zostały następujące
+    biblioteki:
+    \begin{lstlisting}
+        import numpy as np
+        from scipy.optimize import newton
+    \end{lstlisting}
+
+    \subsection{Zadanie 1.}
+    Do wyznaczenia pierwiastków wielomianu została wykorzystana
+    funkcja
+    \[
+        \texttt{scipy.optimize.newton}.
+    \]
+    Zostały jednak zmodyfikowane początkowe oszacowania $x_0$.
+    Odpowiednie wartości tych oszacowań i wyznaczone wartości
+    pierwiastków:
+    \begin{align}
+            x_0 \in \{-2,0,2\}, f(x)=0 &\Leftrightarrow
+                x \in \{-2.236,0,2.236\} \\
+            x_0 \in \{-2,0,2\}, f(x)=0 &\Leftrightarrow
+                x \in \{-1.879,0.347,1.532\} \\
+            x_0 \in \{1\}, f(x)=0 &\Leftrightarrow
+                x=1.149 \\
+            x_0 \in \{-2,2\}, f(x)=0 &\Leftrightarrow
+                x \in \{-2.3,2.3\}
+    \end{align}
     
 \end{document}

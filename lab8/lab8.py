@@ -20,18 +20,20 @@ def find_roots(f, est):
     
     return result
 
-est = [-2, 0, 2]
-result = find_roots(f1, est)
-print(result)
+def zad1():
+    est = [-2, 0, 2]
+    result = find_roots(f1, est)
+    print(result)
 
-est = [-2, 0, 2]
-result = find_roots(f2, est)
-print(result)
+    est = [-2, 0, 2]
+    result = find_roots(f2, est)
+    print(result)
 
-est = [1]
-result = find_roots(f3, est)
-print(result)
+    est = [1]
+    result = find_roots(f3, est)
+    print(result)
 
-est = [-2, 2]
-result = find_roots(f4, est)
-print(result)
+    est = [-2, 2]
+    result = find_roots(f4, est)
+    print(result)
+
