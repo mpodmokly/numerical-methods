@@ -5,13 +5,10 @@ from scipy.optimize import newton
 def zad1():
     def f1(x):
         return x ** 3 - 5 * x
-
     def f2(x):
         return x ** 3 - 3 * x + 1
-
     def f3(x):
         return 2 - x ** 5
-
     def f4(x):
         return x ** 4 - 4.29 * x ** 2 - 5.29
 
@@ -131,8 +128,8 @@ def zad3():
         else:
             print(f"{f.__name__} 53 bits - k = {k}")
     
-    # 24 bit - 6
-    # 53 bit - 14
+    # 24 bit - 6 digits
+    # 53 bit - 14 digits
     digits1 = 6
     digits2 = 14
 
@@ -159,7 +156,6 @@ def zad4():
     
     def root_newton(f, f_prim, x0, k):
         x = x0
-
         for _ in range(k):
             x = x - f(x) / f_prim(x)
         
