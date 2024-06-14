@@ -7,4 +7,5 @@
 **Lab 5** - polynomial approximation<br>
 **Lab 6** - quadratures<br>
 **Lab 7** - adaptive quadratures<br>
-**Lab 8** - 🚧 under construction 🚧
+**Lab 8** - solving nonlinear equations<br>
+**Lab 9** - 🚧 under construction 🚧
