@@ -176,48 +176,6 @@
     \[
         p(x)=c_0T_0(x)+c_1T_1(x)+c_2T_2(x)
     \]
-    \begin{comment}
-        Zdefiniujmy iloczyn skalarny funkcji w następujący sposób:
-        \[
-            \langle f,g \rangle =\int_{-1}^{1}f(x)g(x)w(x)dx
-        \]
-        W powyższym wzorze $w(x)$ to funkcja wagowa, która w przypadku
-        wielomianów Czebyszewa dana jest wzorem:
-        \[
-            w(x)=\frac{1}{\sqrt{1-x^2}},x \in [-1,1]
-        \]
-        Dla wielomianów ortogonalnych $\phi_0,\ldots,\phi_n$
-        problem sprowadza się do znalezienia współczynników
-        $c_0,\ldots,c_n$ kombinacji liniowej. Możemy je wyznaczyć
-        z następującej zależności:
-        \[
-            \begin{bmatrix}
-                \langle \phi_0,\phi_0 \rangle & 0 & \cdots & 0 \\
-                0 & \langle \phi_1,\phi_1 \rangle & \cdots & 0 \\
-                \vdots & \vdots & \ddots & \vdots \\
-                0 & 0 & \cdots & \langle \phi_n,\phi_n \rangle
-            \end{bmatrix}
-            \begin{bmatrix}
-                c_0 \\
-                c_1 \\
-                \vdots \\
-                c_n
-            \end{bmatrix}
-            =
-            \begin{bmatrix}
-                \langle f,\phi_0 \rangle \\
-                \langle f,\phi_1 \rangle \\
-                \vdots \\
-                \langle f,\phi_n \rangle
-            \end{bmatrix}
-            \Rightarrow c_k=\frac{\langle f,\phi_k \rangle}{\langle
-            \phi_k, \phi_k \rangle}
-        \]
-        Musimy zastosować podstawienie
-        \[
-            t=x+1
-        \]
-    \end{comment}
     Współczynniki $c_k$ zostały wyznaczone z wykorzystaniem funkcji
     \[
         \texttt{np.polynomial.chebyshev.chebfit}
