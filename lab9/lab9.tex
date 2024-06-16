@@ -2,9 +2,10 @@
 \usepackage{polski}
 \usepackage[polish]{babel}
 
-\usepackage{graphicx, float, caption, subcaption, amsmath}
-\usepackage{tabularx, multirow, hyperref, enumitem, listings}
-\usepackage{xcolor}
+\usepackage{graphicx, float, caption, subcaption}
+\usepackage{tabularx, multirow, hyperref, enumitem}
+\usepackage{listings, xcolor}
+\usepackage{amsmath, amssymb}
 %\usepackage{minted}
 
 \hypersetup{
@@ -56,12 +57,323 @@
 
 \title{Laboratorium 9 - Równania różniczkowe zwyczajne}
 \author{Mateusz Podmokły - II rok Informatyka WI}
-\date{9 maj 2024}
+\date{16 maj 2024}
 
 \begin{document}
     \maketitle
     \section{Treść zadania}
-    \subsection*{}
-    \textbf{Zadanie 1.}
+    \textbf{Zadanie 1.} Przedstaw każde z poniższych równań
+    różniczkowych zwyczajnych jako równoważny układ równań
+    pierwszego rzędu (ang. ﬁrst-order system of ODEs):
+    \begin{enumerate}
+        \item równanie Van der Pol'a:
+            \[
+                y''=y'(1-y^2)-y
+            \]
+        \item równanie Blasiusa:
+            \[
+                y'''=-yy''
+            \]
+        \item II zasada dynamiki Newtona dla problemu dwóch
+            ciał:
+            \[
+                y_1''=-\frac{GMy_1}{(y_1^2+y_2^2)^{\frac{3}{2}}}
+            \]
+            \[
+                y_2''=-\frac{GMy_2}{(y_1^2+y_2^2)^{\frac{3}{2}}}
+            \]
+    \end{enumerate}
 
+    \subsection*{}
+    \textbf{Zadanie 2.} Dane jest równanie różniczkowe
+    zwyczajne
+    \[
+        y'=-5y
+    \]
+    z warunkiem początkowym $y(0) = 1$. Równanie rozwiązujemy
+    numerycznie z krokiem $h = 0.5$.
+    \begin{enumerate}
+        \item Analityczna stabilność. Wyjaśnij, czy rozwiązania
+            powyższego równania są stabilne?
+        \item Numeryczna stabilność. Wyjaśnij, czy metoda
+            Euler'a jest stabilna dla tego równania z użytym
+            krokiem $h$?
+        \item Oblicz numerycznie wartości przybliżonego
+            rozwiązania dla $t = 0.5$ metodą Euler'a.
+        \item Wyjaśnij, czy niejawna metoda Euler'a jest
+            stabilna dla tego równania z użytym krokiem $h$?
+        \item Oblicz numerycznie wartości przybliżonego
+            rozwiązania dla $t = 0.5$ niejawną metodą Euler'a.
+    \end{enumerate}
+
+    \subsection*{}
+    \textbf{Zadanie 3.}
+    
+
+    \section{Specyfikacja użytego środowiska}
+    Specyfikacja:
+    \begin{itemize}
+        \item Środowisko: Visual Studio Code,
+        \item Język programowania: Python,
+        \item System operacyjny: Microsoft Windows 11,
+        \item Architektura systemu: x64.
+    \end{itemize}
+
+    \section{Rozwiązanie problemu}
+    \subsection{Biblioteki}
+    W realizacji rozwiązania wykorzystane zostały następujące
+    biblioteki:
+    \begin{lstlisting}
+        import numpy as np
+    \end{lstlisting}
+
+    \subsection{Zadanie 1.}
+    Każde równanie w postaci równania różniczkowego zwyczajnego
+    zostanie przekształcone równoważnie do układu równań
+    pierwszego rzędu.
+
+    \subsubsection{Równanie 1.}
+    Mamy równanie
+    \[
+        y''=y'(1-y^2)-y
+    \]
+    Zastosujemy podstawienie
+    \[
+        z=y'
+    \]
+    Otrzymuejmy równoważny układ równań
+    \[
+        \begin{cases}
+            y'=z \\
+            z'=z(1-y^2)-y
+        \end{cases}
+    \]
+
+    \subsubsection{Równanie 2.}
+    Mamy równanie
+    \[
+        y'''=-yy''
+    \]
+    Stosujemy analogiczne podstawienia
+    \[
+        z=y'
+    \]
+    \[
+        w=z'
+    \]
+    Otrzymuejmy układ równań
+    \[
+        \begin{cases}
+            y'=z \\
+            z'=w \\
+            w'=-yw
+        \end{cases}
+    \]
+
+    \subsubsection{Równanie 3.}
+    Mamy równanie
+    \[
+        y_1''=-\frac{GMy_1}{(y_1^2+y_2^2)^{\frac{3}{2}}}
+    \]
+    \[
+        y_2''=-\frac{GMy_2}{(y_1^2+y_2^2)^{\frac{3}{2}}}
+    \]
+    Stosujemy analogiczne podstawienia
+    \[
+        z_1=y_1'
+    \]
+    \[
+        z_2=y_2'
+    \]
+    Otrzymuejmy układ równań
+    \[
+        \begin{cases}
+            y_1'=z_1 \\
+            y_2'=z_2 \\
+            z_1'=-\frac{GMy_1}{(y_1^2+y_2^2)^{\frac{3}{2}}} \\
+            z_2'=-\frac{GMy_2}{(y_1^2+y_2^2)^{\frac{3}{2}}}
+        \end{cases}
+    \]
+
+    \subsection{Zadanie 2.}
+    \subsubsection{Analityczna stabilność}
+    Mamy równanie
+    \[
+        y'=-5y
+    \]
+    z warunkiem początkowym
+    \[
+        y(0)=1
+    \]
+    Możemy je rozwiązać analitycznie w prosty sposób metodą
+    separacji zmiennych. Otrzymujemy rozwiązanie
+    \[
+        y(t)=y_0e^{-5t}
+    \]
+    gdzie
+    \[
+        y_0=y(0)=1
+    \]
+    Teraz sprawdźmy stabilność otrzymanego rozwiązania.
+    Równanie różniczkowe jest stabilne, jeśli dla każdego
+    $\epsilon > 0$ istnieje $\delta > 0$ takie, że jeśli
+    początkowe odchylenie
+    \[
+        |y(0)-y_0|<\delta
+    \]
+    to
+    \[
+        |y(t)-\hat{y}(t)|<\epsilon
+    \]
+    dla każdego $t \geq 0$. \\ 
+    Rozważmy zaburzenie początkowego warunku
+    \[
+        y(0)=y_0
+    \]
+    Niech
+    \[
+        \hat{y}(0)=y_0+\delta
+    \]
+    Mamy wtedy rozwiązanie równania dla początkowego warunku
+    \[
+        \hat{y}(t)=(y_0+\delta)e^{-5t}
+    \]
+    Możemy podstawić
+    \[
+        |y(t)-\hat{y}(t)|=|y_0e^{-5t}-(y_0+\delta)e^{-5t}|=
+            |\delta e^{-5t}|
+    \]
+    Wiadomo, że $e^{-5t} \leq 1$ dla każdego $t \geq 0$, więc
+    \[
+        |\delta e^{-5t}| \leq |\delta|
+    \]
+    Możemy wtedy wybrać $\delta$ takie, że
+    $|\delta | \leq \epsilon $. Wtedy
+    \[
+        |y(t)-\hat{y}(t)| < \epsilon
+    \]
+    Oznacza to, że rozwiązania tego równania są stabilne.
+
+    \subsubsection{Numeryczna stabilność}
+    Dla równań różniczkowych postaci
+    \[
+        y'=\lambda y
+    \]
+    gdzie $\lambda \in \mathbb{R}$, warunek stabilności
+    numerycznej metody Euler'a dany jest wzorem
+    \[
+        |1+h\lambda|<1
+    \]
+    Mamy $\lambda =-5$, więc po przekształceniu równoważnym
+    podanego warunku otrzymujemy
+    \[
+        0<h<0.4
+    \]
+    Z tego wynika, że dla tego równania z krokiem $h=0.5$
+    metoda Euler'a nie jest stabilna numerycznie.
+
+    \subsubsection{Metoda Euler'a}
+    Rozwiązanie równania postaci
+    \[
+        y'=f(y,t)
+    \]
+    o warunku początkowym $y(t_0)=y_0$ i kroku $h$, z punktami
+    $t_i$ na osi OX:
+    \[
+        t_{n+1}=t_n+h,\quad n=0,1,2,\dots
+    \]
+    za pomocą metody Euler'a możemy otrzymać ze wzoru:
+    \[
+        y_{n+1}=y_n+hf(y_n,t_n)
+    \]
+    
+    \subsubsection{Stabilność niejawnej metody Euler'a}
+    Dla równań różniczkowych postaci
+    \[
+        y'=\lambda y
+    \]
+    gdzie $\lambda \in \mathbb{R}$, warunek stabilności
+    numerycznej niejawnej metody Euler'a dany jest wzorem
+    \[
+        \left| \frac{1}{1-h\lambda} \right| <1
+    \]
+    Mamy $\lambda =-5$, więc po przekształceniu równoważnym
+    podanego warunku otrzymujemy
+    \[
+        h>0
+    \]
+    Z tego wynika, że dla dowolnego kroku $h>0$ niejawna metoda
+    Euler'a jest stabilna numerycznie.
+
+    \subsubsection{Niejawna metoda Euler'a}
+    Rozwiązanie równania postaci
+    \[
+        y'=f(y,t)
+    \]
+    o warunku początkowym $y(t_0)=y_0$ i kroku $h$, z punktami
+    $t_i$ na osi OX:
+    \[
+        t_{n+1}=t_n+h,\quad n=0,1,2,\dots
+    \]
+    za pomocą niejawnej metody Euler'a możemy otrzymać ze
+    wzoru:
+    \[
+        y_{n+1}=y_n+hf(y_{n+1},t_{n+1})
+    \]
+    Mamy równanie
+    \[
+        y'=-5y
+    \]
+    o warunku początkowym $y(0)=1$ i kroku $h=0.5$.
+    Podstawiamy $f(y,t)$ do wzoru
+    \[
+        y_{n+1}=y_n+h(-5y_{n+1})
+    \]
+    Przekształcając równoważnie otrzymujemy wzór na $y_{n+1}$
+    \[
+        y_{n+1}=\frac{y_n}{5h+1}
+    \]
+    
+    \section{Przedstawienie wyników}
+    \subsection{Jawna metoda Euler'a}
+    Dla równania
+    \[
+        y'=-5y
+    \]
+    oraz $y(0)=1$ i $h=0.5$ otrzymujemy wynik
+    \[
+        y(0.5)=-1.5
+    \]
+    a więc różni się on znacznie od tego wyznaczonego
+    analitycznie, który wynosi
+    \[
+        y_{true}(0.5) \approx 0.082
+    \]
+    Rozbieżność wynika prawdopodobnie z braku stabilności
+    numerycznej tej metody z przyjętym krokiem $h$. Dla
+    $h=0.1$ wynik to już
+    \[
+        y(0.5) \approx 0.031
+    \]
+
+    \subsection{Niejawna metoda Euler'a}
+    Po wykonaniu obliczeń z wykorzystaniem wyprowadzonego
+    wzoru otrzymujemy wynik
+    \[
+        y(0.5) \approx 0.286
+    \]
+    Jest on znacznie lepszy niż w przypadku jawnej
+    metody Euler'a dla kroku $h=0.5$. Zmieńmy krok
+    na $h=0.1$. Otrzymujemy wtedy wynik
+    \[
+        h(0.5) \approx 0.132
+    \]
+
+    \section{Wnioski}
+    Niejawna metoda Euler'a bardziej stabilna, ale mniej
+    dokładna.
+
+    \section{Bibliografia}
+    \url{https://pl.wikipedia.org/wiki/Metoda_Eulera}
+    
 \end{document}
