@@ -107,8 +107,81 @@
     \end{enumerate}
 
     \subsection*{}
-    \textbf{Zadanie 3.}
-    
+    \textbf{Zadanie 3.} Model Kermack'a-McKendrick'a przebiegu
+    epidemii w populacji opisany jest układem równań
+    różniczkowych:
+    \begin{align*}
+        &S'=-\frac{\beta}{N}IS \\
+        &I'=\frac{\beta}{N}IS-\gamma I \\
+        &R'=\gamma I
+    \end{align*}
+    gdzie \\
+    S - liczba osób zdrowych, podatnych na zainfekowanie \\
+    I - liczba osób zainfekowanych i roznoszących infekcję \\
+    R - liczba osób ozdrowiałych
+
+    \subsubsection*{}
+    Liczba N to liczba osób w populacji. Parametr $\beta$
+    reprezentuje współczynnik zakaźności. Parametr $\gamma$
+    reprezentuje współczynnik wyzdrowień. Wartość
+    $\frac{1}{\gamma}$ reprezentuje średni czas choroby. \\
+    Założenia modelu:
+    \begin{itemize}
+        \item przyrost liczby osób zakażonych jest proporcjonalny
+            do liczby osób zakażonych oraz do liczby osób
+            podatnych,
+        \item przyrost liczby osób odpornych lub zmarłych jest
+            wprost proporcjonalny do liczby aktualnie chorych,
+        \item okres inkubacji choroby jest zaniedbywalnie krótki,
+        \item populacja jest wymieszana.
+    \end{itemize}
+    Jako wartości początkowe ustal:
+    \[
+        S(0)=762
+    \]
+    \[
+        I(0)=1
+    \]
+    \[
+        R(0)=0
+    \]
+    Przyjmij też $N=S(0)+I(0)+R(0)=763$ oraz $\beta =1$.
+    Zakładając, że średni czas trwania grypy wynosi
+    $\frac{1}{\gamma}=7$ dni, przyjmij $\gamma =\frac{1}{7}$. \\
+    Całkując od $t=0$ do $t=14$ z krokiem 0.2, rozwiąż powyższy
+    układ równań:
+    \begin{itemize}
+        \item jawną metodą Euler'a
+            \[
+                y_{k+1}=y_k+h_kf(t_k, y_k)
+            \]
+        \item niejawną metodą Euler'a
+            \[
+                y_{k+1}=y_k+h_kf(t_{k+1}, y_{k+1})
+            \]
+        \item metodą Rungego-Kutty czwartego rzędu (RK4)
+            \[
+                y_{k+1}=y_k+\frac{h_k}{6}(k_1+2k_2+2k_3+k_4)
+            \]
+            \begin{align*}
+                &k_1=f(t_k,y_k) \\
+                &k_2=f \left( t_k+\frac{h_k}{2},
+                    y_k+\frac{h_kk_1}{2} \right) \\
+                &k_3=f \left( t_k+\frac{h_k}{2},
+                    y_k+\frac{h_kk_2}{2} \right) \\
+                &k_4=f(t_k+h_k,y_k+h_kk_3)
+            \end{align*}
+    \end{itemize}
+    Wykonaj następujące wykresy:
+    \begin{itemize}
+        \item Dla każdej metody przedstaw na wspólnym rysunku
+            wykresy komponentów rozwiązania ($S$, $I$, $R$) jako
+            funkcje $t$ (3 wykresy).
+        \item Na wspólnym rysunku przedstaw wykresy funkcji
+            $S(t)+I(t)+R(t)$ znalezione przez każdą metodę
+            (1 wykres). Czy niezmiennik $S(t)+I(t)+R(t) \equiv N$
+            jest zachowany?
+    \end{itemize}
 
     \section{Specyfikacja użytego środowiska}
     Specyfikacja:
@@ -124,7 +197,8 @@
     W realizacji rozwiązania wykorzystane zostały następujące
     biblioteki:
     \begin{lstlisting}
-        import numpy as np
+    import numpy as np
+    import matplotlib.pyplot as plt
     \end{lstlisting}
 
     \subsection{Zadanie 1.}
@@ -333,9 +407,91 @@
     \[
         y_{n+1}=\frac{y_n}{5h+1}
     \]
+
+    \subsection{Zadanie 3.}
+    \subsubsection{Jawna metoda Euler'a}
+    Układ równań postaci
+    \[
+        y_1'=f_1(y_1,y_2,y_3,t)
+    \]
+    \[
+        y_2'=f_2(y_1,y_2,y_3,t)
+    \]
+    \[
+        y_3'=f_3(y_1,y_2,y_3,t)
+    \]
+    rozwiązujemy korzystając ze wzoru
+    \[
+        y_{n+1}=y_n+hf(y_n,t_n)
+    \]
+    \subsubsection{Niejawna metoda Euler'a}
+    Układ równań postaci
+    \[
+        y_1'=f_1(y_1,y_2,y_3,t)
+    \]
+    \[
+        y_2'=f_2(y_1,y_2,y_3,t)
+    \]
+    \[
+        y_3'=f_3(y_1,y_2,y_3,t)
+    \]
+    rozwiązujemy korzystając ze wzoru
+    \[
+        y_{n+1}=y_n+hf(y_{n+1}, t_{n+1})
+    \]
+    Podstawiamy układ równań do wzoru
+    \[
+        \begin{cases}
+            S_{n+1}=S_n-h\frac{\beta}{N}I_{n+1}S_{n+1} \\
+            I_{n+1}=I_n+h \left( \frac{\beta}{N}I_{n+1}S_{n+1}
+                -\gamma I_{n+1} \right) \\
+            R_{n+1}=R_n+h\gamma I_{n+1}
+        \end{cases}
+    \]
+    Do rozwiązania układu równań wykorzystałem funkcję z biblioteki
+    \texttt{SciPy}
+    \[
+        \texttt{scipy.optimize.fsolve}
+    \]
+    \subsubsection{Metoda Rungego-Kutty czwartego rzędu (RK4)}
+    Układ równań postaci
+    \[
+        y_1'=f_1(y_1,y_2,y_3,t)
+    \]
+    \[
+        y_2'=f_2(y_1,y_2,y_3,t)
+    \]
+    \[
+        y_3'=f_3(y_1,y_2,y_3,t)
+    \]
+    rozwiązujemy korzystając ze wzoru
+    \[
+        y_{n+1}=y_n+\frac{h}{6}(k_1+2k_2+2k_3+k_4)
+    \]
+    \begin{align*}
+        &k_1=f(y_n,t_n) \\
+        &k_2=f \left( t_n+\frac{h}{2},
+            y_n+\frac{hk_1}{2} \right) \\
+        &k_3=f \left( t_n+\frac{h}{2},
+            y_n+\frac{hk_2}{2} \right) \\
+        &k_4=f(t_n+h,y_n+hk_3)
+    \end{align*}
+
+    \subsubsection{Szacowanie współczynników}
+    Oszacowanie wartości współczynników wykonałem z użyciem
+    jawnej metody Euler'a danej wzorem
+    \[
+        y_{n+1}=y_n+hf(y_n,t_n)
+    \]
+    Do minimalizacji funkcji kosztu metodą Neldera-Meada użyłem
+    funkcji z biblioteki \texttt{SciPy}
+    \[
+        \texttt{scipy.optimize.minimize}
+    \]
     
     \section{Przedstawienie wyników}
-    \subsection{Jawna metoda Euler'a}
+    \subsection{Zadanie 2.}
+    \subsubsection{Jawna metoda Euler'a}
     Dla równania
     \[
         y'=-5y
@@ -356,7 +512,7 @@
         y(0.5) \approx 0.031
     \]
 
-    \subsection{Niejawna metoda Euler'a}
+    \subsubsection{Niejawna metoda Euler'a}
     Po wykonaniu obliczeń z wykorzystaniem wyprowadzonego
     wzoru otrzymujemy wynik
     \[
@@ -368,12 +524,79 @@
     \[
         h(0.5) \approx 0.132
     \]
+    \subsection{Zadanie 3.}
+    \subsubsection{Wykresy przebiegu epidemii}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{explicit_euler.png}
+        \caption{Przebieg epidemii w populacji otrzymany
+            jako rozwiązanie układu równań różniczkowych jawną
+            metodą Euler'a.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{implicit_euler.png}
+        \caption{Przebieg epidemii w populacji otrzymany
+            jako rozwiązanie układu równań różniczkowych niejawną
+            metodą Euler'a.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{RK4.png}
+        \caption{Przebieg epidemii w populacji otrzymany
+            jako rozwiązanie układu równań różniczkowych metodą
+            Rungego-Kutty rzędu czwartego (RK4).}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{total_people.png}
+        \caption{Łączna wielkość populacji w czasie.}
+    \end{figure}
+
+    \subsubsection{Szacowanie współczynników}
+    Dla funkcji kosztu
+    \[
+        L(\theta)=\sum_{i=0}^{T}(I_i-\hat{I_i})^2
+    \]
+    otrzymane wartości współczynników to:
+    \[
+        \beta \approx 2.31
+    \]
+    \[
+        \gamma \approx 0.3
+    \]
+    \[
+        R_0=\frac{\beta}{\gamma} \approx 7.81
+    \]
+    a dla funkcji
+    \[
+        L(\theta)=-\sum_{i=0}^{T}I_iln\hat{I_i}+
+            \sum_{i=0}^{T}\hat{I_i}
+    \]
+    współczynniki wynoszą
+    \[
+        \beta \approx 2.34
+    \]
+    \[
+        \gamma \approx 0.31
+    \]
+    \[
+        R_0=\frac{\beta}{\gamma} \approx 7.63
+    \]
 
     \section{Wnioski}
-    Niejawna metoda Euler'a bardziej stabilna, ale mniej
-    dokładna.
+    Niejawna metoda Euler'a okazała się bardziej stabilna niż
+    jawna metoda Euler'a, ale charakteryzuje się mniejszą
+    dokładnością zwracanych wyników. Zarówno metoda Euler'a,
+    jak i metoda Rungego-Kutty czwartego rzędu (RK4), są
+    skutecznymi narzędziami do rozwiązywania układów równań
+    różniczkowych. Należy jednak pamiętać o odpowiednim doborze
+    kroku $h$ w celu zachowania stabilności metody.
 
     \section{Bibliografia}
-    \url{https://pl.wikipedia.org/wiki/Metoda_Eulera}
+    \url{https://pl.wikipedia.org/wiki/Metoda_Eulera} \\
+    \url{https://pl.wikipedia.org/wiki/Algorytm_Rungego-Kutty} \\
+    \url{https://pl.wikipedia.org/wiki/Metody_Lapunowa} \\
+    \url{https://pl.wikipedia.org/wiki/Metoda_Neldera-Meada}
     
 \end{document}
