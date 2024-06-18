@@ -8,4 +8,5 @@
 **Lab 6** - quadratures<br>
 **Lab 7** - adaptive quadratures<br>
 **Lab 8** - solving nonlinear equations<br>
-**Lab 9** - 🚧 under construction 🚧
+**Lab 9** - ordinary differential equations<br>
+**Lab 10** - 🚧 under construction 🚧
