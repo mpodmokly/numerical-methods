@@ -71,5 +71,82 @@
     $x$ to położenie, \\
     $\Omega$ to dziedzina, na której rozwiązujemy równanie,
     $\Omega=\{x|-2\pi \leq x \leq 2\pi\}$, \\
-    $u$ to funkcja, której postaci szukamy.
+    $u(x)$ to funkcja, której postaci szukamy.
+
+    \subsection*{}
+    Warunek początkowy zdefiniowany jest następująco:
+    \[
+        u(0)=0.
+    \]
+    Analityczna postać rozwiązania równania z warunkiem
+    początkowym jest następująca:
+    \[
+        u(x)=\frac{sin(\omega x)}{\omega}
+    \]
+    Rozwiąż powyższe zagadnienie początkowe. Do rozwiązania
+    użyj sieci neuronowych typu PINN (ang. Physics-informed Neural
+    Network). \\
+    Koszt rezydualny zdefiniowany jest następująco:
+    \[
+        \mathcal{L}_r(\theta)=\frac{1}{N}\sum_{i=1}^{N}
+            \left| \left| \frac{d\hat{u}(x)}{dx}-cos(\omega x_i)
+            \right| \right| ^2,
+    \]
+    gdzie $N$ jest liczbą punktów kolokacyjnych. \\
+    Koszt związany z warunkiem początkowym przyjmuje postać:
+    \[
+        \mathcal{L}_{IC}(\theta)=||\hat{u}(0)-0||^2.
+    \]
+    Funkcja kosztu zdefiniowana jest następująco:
+    \[
+        \mathcal{L}(\theta)=\mathcal{L}_r(\theta)+
+            \mathcal{L}_{IC}(\theta).
+    \]
+    Warstwa wejściowa sieci posiada 1 neuron, reprezentujący
+    zmienną $x$. Warstwa wyjściowa także posiada 1 neuron,
+    reprezentujący zmienną $\hat{u}(x)$. Uczenie trwa
+    przez 50 000 kroków algorytmem Adam ze stałą uczenia równą
+    0.001. Jako funkcję aktywacji przyjmij tangens hiperboliczny,
+    $tanh(x)$.
+
+    \subsection*{}
+    Rozważ następujące przypadki:
+    \begin{enumerate}
+        \item Przypadek $\omega=1$. \\
+            Ustal następujące wartości:
+            \begin{itemize}[label=--]
+                \item 2 warstwy ukryte, 16 neuronów w każdej
+                    warstwie
+                \item liczba punktów treningowych: 200
+                \item liczba punktów testowych: 1000
+            \end{itemize}
+        \item Przypadek $\omega=15$. \\
+            Ustal następujące wartości:
+            \begin{itemize}[label=--]
+                \item liczba punktów treningowych:
+                    $200 \cdot 15=3000$
+                \item liczba punktów testowych: 5000
+            \end{itemize}
+            Eksperymenty przeprowadź z trzema architekturami
+            sieci:
+            \begin{itemize}[label=--]
+                \item 2 warstwy ukryte, 16 neuronów w każdej
+                    warstwie
+                \item 4 warstwy ukryte, 64 neurony w każdej
+                    warstwie
+                \item 5 warstw ukrytych, 128 neuronów w każdej
+                    warstwie
+            \end{itemize}
+        \item Dla wybranej przez siebie sieci porównaj wynik
+            z rozwiązaniem, w którym przyjęto, że szukane
+            rozwiązanie ($ansatz$) ma postać:
+            \[
+                \hat{u}(x;\theta)=tanh(\omega x) \cdot
+                    NN(x;\theta).
+            \]
+            Taka postać rozwiązania gwarantuje spełnienie warunku
+            $\hat{u}=0$ bez wprowadzania składnika
+            $\mathcal{L}_{IC}$ do funkcji kosztu.
+    \end{enumerate}
+
 \end{document}
