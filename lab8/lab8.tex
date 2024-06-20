@@ -183,10 +183,10 @@
     \subsection{Zadanie 2.}
     Badanie zbieżności za pomocą wzoru teoretycznego:
     \begin{align*}
-        &|g'_1(2)|=1.33>1 \\
-        &|g'_2(2)|=0.75<1 \\
-        &|g'_3(2)|=0.5<1 \\
-        &|g'_4(2)|=0
+        &|g'_1(2)|=1.33>1 &\text{(rozbieżny)} \\
+        &|g'_2(2)|=0.75<1 &\text{(zbieżność liniowa)} \\
+        &|g'_3(2)|=0.5<1 &\text{(zbieżność liniowa)} \\
+        &|g'_4(2)|=0 &\text{(zbieżność wyższa niż liniowa)}
     \end{align*}
     Następnie zaimplementowałem te schematy iteracyjne
     i obliczyłem zbieżność ze wzoru
@@ -199,12 +199,15 @@
     potwierdzony został brak zbieżności. \\
     Schemat iteracyjny funkcji $\sqrt{3x-2}$ nie jest
     zbieżny, ponieważ każda styczna do jej wykresu
-    przecina oś OX poza dziedziną funkcji. \\
+    przecina oś OX poza dziedziną funkcji. W tej sytuacji
+    zbieżność nie jest możliwa do wyznacznia za pomocą podanego
+    wzoru. \\
     W przypadku funkcji $g_3$ punkty przecięcia
     stycznych z osią OX po każdej iteracji oddalają
     się od środka układu współrzędnych i od pierwiastka,
     więc schemat iteracyjny tej funkcji nie jest
-    zbieżny. \\
+    zbieżny. Tak samo jak wcześiej, nie jesteśmy w stanie wyznaczyć
+    wartości zbieżności schematu iteracyjnego $r$. \\
     Dla ostatniej funkcji, w przypadku użycia metody
     Newtona, wartość $r$ zbiega do 0, co jest
     potwierdzeniem wcześniejszych obliczeń teoretycznych.

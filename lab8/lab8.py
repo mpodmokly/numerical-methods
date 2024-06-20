@@ -170,4 +170,4 @@ def zad4():
     print(eps)
 
 
-zad4()
+zad2()
