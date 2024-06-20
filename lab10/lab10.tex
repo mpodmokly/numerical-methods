@@ -147,6 +147,170 @@
             Taka postać rozwiązania gwarantuje spełnienie warunku
             $\hat{u}=0$ bez wprowadzania składnika
             $\mathcal{L}_{IC}$ do funkcji kosztu.
+        \item Porównaj pierwotny wynik z rozwiązaniem, w którym
+        pierwszą warstwę ukrytą zainicjalizowano cechami Fouriera:
+        \[
+            \gamma (x)=[sin(2^0\pi x),cos(2^0\pi x),\dots,
+                sin(2^{L-1}\pi x),cos(2^{L-1}\pi x)]
+        \]
+        Dobierz $L$ tak, aby nie zmieniać szerokości warstwy
+        ukrytej.
     \end{enumerate}
+    Dla każdego z powyższych przypadków stwórz następujące
+    wykresy:
+    \begin{itemize}[label=--]
+        \item Wykres funkcji $u(x)$, tj. dokładnego rozwiązania
+            oraz wykres funkcji $\hat{u}(x)$, tj. rozwiązania
+            znalezionego przez sieć neuronową
+        \item Wykres funkcji błędu.
+    \end{itemize}
+    Stwórz także wykres funkcji kosztu w zależności od liczby epok.
+
+    \section{Specyfikacja użytego środowiska}
+    Specyfikacja:
+    \begin{itemize}
+        \item Środowisko: Visual Studio Code,
+        \item Język programowania: Python,
+        \item System operacyjny: Microsoft Windows 11,
+        \item Architektura systemu: x64.
+    \end{itemize}
+
+    \section{Rozwiązanie problemu}
+    \subsection{Biblioteki}
+    W realizacji rozwiązania wykorzystane zostały następujące
+    biblioteki:
+    \begin{lstlisting}
+    import torch
+    import torch.nn as nn
+    import numpy as np
+    import matplotlib.pyplot as plt
+    \end{lstlisting}
+
+    \subsection{Model sieci neuronowej}
+    Do zaimplementowania modelu sztucznej sieci neuronowej PINN
+    wykorzystałem bibliotekę \texttt{PyTorch}. Dane treningowe to
+    równomiernie rozłożone punkty na przedziale $[-2\pi,2\pi]$
+    zawierające krańce przedziału oraz warunek początkowy, czyli
+    $x=0$. Natomiast jako dane testujące również wykorzystałem
+    równomiernie rozłożone punkty na przedziale $[-2\pi,2\pi]$,
+    jednak bez krańców przedziału, żeby uniknąć powtórzeń punktów.
+
+    \section{Przedstawienie wyników}
+    \subsection{Przypadek 1.}
+    Parametry:
+    \begin{itemize}
+        \item $\omega =1$
+        \item 2 warstwy ukryte, 16 neuronów w każdej warstwie
+        \item 200 punktów treningowych
+        \item 1000 punktów testowych
+    \end{itemize}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{nn_a_f.png}
+        \caption{Dokładne rozwiązanie i rozwiązanie znalezione
+            przez sieć, przypadek 1.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{nn_a_err.png}
+        \caption{Błąd względny rozwiązania, przypadek 1.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{nn_a_loss.png}
+        \caption{Wartość funkcji kosztu w zależności od liczby epok,
+            przypadek 1.}
+    \end{figure}
+
+    \subsection{Przypadek 2.}
+    Parametry:
+    \begin{itemize}
+        \item $\omega =15$
+        \item 2 warstwy ukryte, 16 neuronów w każdej warstwie
+        \item 3000 punktów treningowych
+        \item 5000 punktów testowych
+    \end{itemize}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{nn_b1_f.png}
+        \caption{Dokładne rozwiązanie i rozwiązanie znalezione
+            przez sieć, przypadek 2.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{nn_b1_err.png}
+        \caption{Błąd względny rozwiązania, przypadek 2.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{nn_b1_loss.png}
+        \caption{Wartość funkcji kosztu w zależności od liczby epok,
+            przypadek 2.}
+    \end{figure}
+
+    \subsection{Przypadek 3.}
+    Parametry:
+    \begin{itemize}
+        \item $\omega =15$
+        \item 4 warstwy ukryte, 64 neurony w każdej warstwie
+        \item 3000 punktów treningowych
+        \item 5000 punktów testowych
+    \end{itemize}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{nn_b2_f.png}
+        \caption{Dokładne rozwiązanie i rozwiązanie znalezione
+            przez sieć, przypadek 3.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{nn_b2_err.png}
+        \caption{Błąd względny rozwiązania, przypadek 3.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{nn_b2_loss.png}
+        \caption{Wartość funkcji kosztu w zależności od liczby epok,
+            przypadek 3.}
+    \end{figure}
+
+    \subsection{Przypadek 4.}
+    Parametry:
+    \begin{itemize}
+        \item $\omega =15$
+        \item 5 warstwy ukryte, 128 neuronów w każdej warstwie
+        \item 3000 punktów treningowych
+        \item 5000 punktów testowych
+    \end{itemize}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{nn_b3_f.png}
+        \caption{Dokładne rozwiązanie i rozwiązanie znalezione
+            przez sieć, przypadek 4.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{nn_b3_err.png}
+        \caption{Błąd względny rozwiązania, przypadek 4.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{nn_b3_loss.png}
+        \caption{Wartość funkcji kosztu w zależności od liczby epok,
+            przypadek 4.}
+    \end{figure}
+
+    \subsection{Przypadek 5.}
+    Parametry:
+    \begin{itemize}
+        \item $\omega =15$
+        \item 4 warstwy ukryte, 64 neuronów w każdej warstwie
+        \item 3000 punktów treningowych
+        \item 5000 punktów testowych
+        \item szukane rozwiązanie ($ansatz$) ma postać:
+            \[
+                \hat{u}(x;\theta)=tanh(\omega x)\cdot NN(x;\theta)
+            \]
+    \end{itemize}
 
 \end{document}
