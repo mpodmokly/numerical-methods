@@ -7,25 +7,40 @@ N_TRAIN = 3000
 N_TEST = 5000
 OMEGA = 15
 LR = 0.001
-EPOCHS = 50000
-ANSATZ = True
+EPOCHS = 10000
+ANSATZ = False
+
+L = 32
+device = torch.device("cuda")
+
+def fourier(x):
+    x_fourier = []
+    
+    for i in range(L):
+        x_fourier.append(torch.sin((2 ** i) * torch.pi * x))
+        x_fourier.append(torch.cos((2 ** i) * torch.pi * x))
+    
+    return torch.stack(x_fourier, dim=1).view(-1).to(device)
 
 def loss_fun(model, x_train):
     x_train.requires_grad_(True)
+    x_fourier = fourier(x_train)
 
-    u_pred = model(x_train)
+    u_pred = model(x_fourier)# * torch.tensor([1], device=device)
     if ANSATZ:
         u_pred *= torch.tanh(OMEGA * x_train)
 
+    grad_outputs  = torch.ones_like(u_pred).to(device)
     du_dx = torch.autograd.grad(outputs=u_pred, inputs=x_train,
-                                grad_outputs=torch.ones_like(u_pred),
+                                grad_outputs=grad_outputs,
                                 create_graph=True)[0]
-    target = torch.cos(OMEGA * x_train)
+    target = torch.cos(OMEGA * x_train).to(device)
     residual_loss = nn.functional.mse_loss(du_dx, target)
 
     boundary_loss = 0
     if not ANSATZ:
-        boundary = model(torch.tensor([0], dtype=torch.float32))
+        x_bound = fourier(torch.tensor([0], dtype=torch.float32).to(device))
+        boundary = model(x_bound)
         boundary_loss = torch.norm(boundary) ** 2
     return residual_loss + boundary_loss
 
@@ -61,8 +76,8 @@ def plot_loss(loss):
     plt.title("Value of loss function")
 
 
-layers = [1] + 4 * [64] + [1]
-model = neural_network(layers)
+layers = [2 * L] + 4 * [2 * L] + [1]
+model = neural_network(layers).to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=LR)
 
 a = -2 * np.pi
@@ -71,7 +86,7 @@ b = 2 * np.pi
 x = np.linspace(a, b, N_TRAIN - 1)
 x = np.append(x, 0)
 x = x.reshape(-1, 1)
-x_train = torch.tensor(x, dtype=torch.float32)
+x_train = torch.tensor(x, dtype=torch.float32).to(device)
 loss_val = np.zeros(EPOCHS)
 
 for i in range(EPOCHS):
@@ -88,12 +103,16 @@ x = np.linspace(a, b, N_TEST + 2)
 x = np.delete(x, 0)
 x = np.delete(x, -1)
 x = x.reshape(-1, 1)
-x_test = torch.tensor(x, dtype=torch.float32)
+x_test = torch.tensor(x, dtype=torch.float32).to(device)
 
-prediction = (model(x_test) * np.tanh(OMEGA * x_test)).detach().numpy()
-exact_result = (np.sin(OMEGA * x_test.numpy()) / OMEGA).astype(np.float32)
+prediction = model(fourier(x_test))
+if ANSATZ:
+    prediction *= torch.tanh(OMEGA * x_test)
 
-plot_fun(x_test.numpy(), prediction, exact_result)
-#plot_err(x_test.numpy(), prediction, exact_result)
+prediction = prediction.detach().cpu().numpy()
+exact_result = (np.sin(OMEGA * x_test.cpu().numpy()) / OMEGA).astype(np.float32)
+
+plot_fun(x_test.cpu().numpy(), prediction, exact_result)
+#plot_err(x_test.cpu().numpy(), prediction, exact_result)
 #plot_loss(loss_val)
 plt.show()
