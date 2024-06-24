@@ -1,13 +1,5 @@
 import numpy as np
-
-def f1(x, y):
-    return x ** 2 - 4 * x * y + y ** 2
-def f2(x, y):
-    return x ** 4 - 4 * x * y + y ** 4
-def f3(x, y):
-    return 2 * x ** 3 - 3 * x ** 2 - 6 * x * y * (x - y - 1)
-def f4(x, y):
-    return (x - y) ** 4 + x ** 2 - y ** 2 - 2 * x + 2 * y + 1
+import matplotlib.pyplot as plt
 
 def grad_f1(x, y):
     df_dx = 2 * x - 4 * y
@@ -104,12 +96,12 @@ def zad2():
     r = np.random.uniform(0, 20, size=(k, 2))
     l1 = 1
     l2 = 1
-    iter = 10
+    iter = 400
     eps = 1e-13
 
-    x = np.zeros(shape=(n+1, 2))
-    x[:, 0] = np.random.uniform(0, 20, n+1)
-    x[:, 1] = np.random.uniform(0, 20, n+1)
+    x = np.zeros(shape=(n + 1, 2))
+    x[:, 0] = np.random.uniform(0, 20, n + 1)
+    x[:, 1] = np.random.uniform(0, 20, n + 1)
     x_0 = np.array([0, 0])
     x_n = np.array([20, 20])
     x[0] = x_0
@@ -120,54 +112,72 @@ def zad2():
 
         for i in range(n + 1):
             for j in range(k):
-                result += 1 / (eps + np.linalg.norm(x[i] - r[j])) ** 2
-        result *= l1
+                result += l1 / (eps + np.linalg.norm(x[i] - r[j])) ** 2
 
         for i in range(n):
-            result += np.linalg.norm(x[i + 1] - x[i]) ** 2
-        result *= l2
+            result += l2 * np.linalg.norm(x[i + 1] - x[i]) ** 2
+        
         return result
 
     def gradient(x):
         grad = np.zeros_like(x)
-        grad[0] = 2 * l2 * (x[1] - x[0]) - l1 *\
-        np.sum((2 * (x[0] - r)) / (eps + np.linalg.norm(x[0] - r)))
-        
-        
-        for i in range(1, n):
-            grad[i] = 2 * l2 * (x[i + 1] - x[i - 1]) - l1 *\
-                np.sum((2 * (x[i] - r)) / (eps + np.linalg.norm(x[i] - r)))
-        
-        grad[-1] = 2 * l2 * (x[n] - x[n - 1]) - l1 *\
-            np.sum((2 * (x[n] - r)) / (eps + np.linalg.norm(x[n] - r)))
-        
-        return grad 
+
+        for i in range(1, n):   
+            grad[i] += 2 * l2 * (2 * x[i] - x[i - 1] - x[i + 1])
+
+            for j in range(k):
+                norm = np.linalg.norm(x[i] - r[j])
+                grad[i] -= 2 * l1 * (x[i] - r[j]) / (eps + norm ** 2) ** 2
+
+        return grad
 
     def gss(f, a, b):
         tolerance = 1e-5
         invphi = (np.sqrt(5) - 1) / 2
 
         while abs(b - a) > tolerance:
-            c = b - (b - a) * invphi
-            d = a + (b - a) * invphi
-            if f(c) < f(d):
-                b = d
+            alpha1 = b - (b - a) * invphi
+            alpha2 = a + (b - a) * invphi
+            if f(alpha1) < f(alpha2):
+                b = alpha2
             else:
-                a = c
+                a = alpha1
 
-        return (b + a) / 2
+        return (a + b) / 2
     
     def sdm(x0):
-        for _ in range(iter):
+        F_values = np.zeros(iter)
+
+        for i in range(iter):
             d = gradient(x0)
-            #print(d)
             alpha = gss(lambda a: F(x0 - a * d), 0, 1)
             x0 = x0 - alpha * d
+            F_values[i] = F(x0)
         
-        print(x0)
-        return x0
+        return x0, F_values
     
-    sdm(x)
+    def plot_path(x, r):
+        plt.scatter(r[:, 0], r[:, 1], color="red", label="r")
+        plt.scatter(x[:, 0], x[:, 1], color="green", label="x")
+        plt.plot(x[:, 0], x[:, 1], color="green")
+        plt.grid(True)
+        plt.xlabel("x")
+        plt.ylabel("y")
+        plt.title("The shortest path")
+        plt.legend()
+        plt.show()
+    
+    def plot_F(F_values):
+        x = np.linspace(1, iter, iter)
+        plt.plot(x, F_values)
+        plt.xlabel("iteration")
+        plt.ylabel("F value")
+        plt.title("Values of the F function")
+        plt.show()
+    
+    x, F_values = sdm(x)
+    plot_path(x, r)
+    #plot_F(F_values)
 
 
 zad2()

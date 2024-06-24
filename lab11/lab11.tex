@@ -75,14 +75,94 @@
     \end{align*}
 
     \subsection*{}
-    \textbf{Zadanie 2.} Funkcja celu użyta do optymalizacji
+    \textbf{Zadanie 2.} Należy wyznaczyć najkrótszą ścieżkę robota
+    pomiędzy dwoma punktami $x^{(0)}$ i $x^{(n)}$. Problemem są
+    przeszkody usytuowane na trasie robota, których należy unikać.
+    Zadanie polega na minimalizacji funkcja kosztu, która sprowadza
+    problem nieliniowej optymalizacji z ograniczeniami do problemu
+    nieograniczonej optymalizacji. \\
+    Macierz $X \in \mathbb{R}^{(n+1)\times 2}$ opisuje ścieżkę
+    złożoną z $n+1$ punktów $x^{(0)},x^{(1)},x^{(2)},\ldots ,
+    x^{(n)}$. Każdy punkt posiada 2 współrzędne, $x^{(i)} \in
+    \mathbb{R}^2$. Punkty początkowy i końcowy ścieżki, $x^{(0)}$
+    i $x^{(n)}$, są ustalone. \\
+    Punkty z przeszkodami (punkty o 2 współrzędnych), $r^{(i)}$ dane
+    są w macierzy przeszkód $R \in \mathbb{R}^{k\times 2}$. \\
+    W celu optymalizacji ścieżki robota należy użyć metody
+    największego spadku. Funkcja celu użyta do optymalizacji
     $F(x^{(0)},x^{(1)},\dots ,x^{(n)})$ zdefiniowana jest jako
     \[
         F(x^{(0)},x^{(1)},\dots ,x^{(n)})=\lambda _1
             \sum_{i=0}^{n}\sum_{j=1}^{k}\frac{1}
-            {\epsilon +||x^{(i)}-r{(j)}||_2^2}+\lambda _2
+            {\epsilon +||x^{(i)}-r^{(j)}||_2^2}+\lambda _2
             \sum_{i=0}^{n-1}||x^{(i+1)}-x^{(i)}||_2^2
     \]
+    Symbole użyte we wzorze mają następujące znaczenie:
+    \begin{itemize}
+        \item Stałe $\lambda _1$ i $\lambda _2$ określają wpływ
+            każdego członu wyrażenia na wartość $F(X)$
+            \begin{itemize}[label=--]
+                \item $\lambda _1$ określa wagę składnika
+                    zapobiegającego zbytniemu zbliżaniu się do
+                    przeszkody,
+                \item $\lambda _2$ określa wagę składnika
+                    zapobiegającego tworzeniu bardzo długich
+                    ścieżek,
+            \end{itemize}
+        \item $n$ jest liczbą odcinków, a $n+1$ liczbą punktów na
+            trasie robota,
+        \item $k$ jest liczbą przeszkód, których robot musi unikać,
+        \item dodanie $\epsilon$ w mianowniku zapobiega dzieleniu
+            przez zero.
+    \end{itemize}
+    \begin{enumerate}
+        \item Wyprowadź wyrażenie na gradient $\nabla F$ funkcji
+            celu $F$ względem $x^{(i)}$:
+            \[
+                \nabla F=
+                \begin{bmatrix}
+                    \frac{\partial F}{\partial x^{(0)}} \\
+                    \vdots \\
+                    \frac{\partial F}{\partial x^{(n)}}
+                \end{bmatrix}
+            \]
+            Wzór wyraź poprzez wektory $x^{(i)}$ i ich składowe,
+            wektory $r^{(i)}$ i ich składowe, $\epsilon$,
+            $\lambda _1$, $\lambda _2$, $n$, i $k$ (niekoneicznie
+            wszystkie). \\
+            Wskazówka: $\frac{\partial ||x||^2}{\partial x}=2x$.
+        \item Opisz matematycznie i zaimplementuj kroki algorytmu
+            największego spadku z przeszukiwaniem liniowym, który
+            służy do minimalizacji funkcji celu $F$. Do
+            przeszukiwania liniowego (ang. line search) użyj metody
+            złotego podziału (ang. golden section search). W tym
+            celu załóż, że $F$ jest unimodalna (w rzeczywistości tak
+            nie jest) i że można ustalić początkowy przedział,
+            w którym znajduje się minimum.
+        \item Znajdź nakrótszą ścieżkę robota przy użyciu algorytmu
+            zaimplementowanego w w poprzednim punktcie. Przyjmij
+            następujące wartości parametrów:
+            \begin{itemize}
+                \item $n=20$,
+                \item $k=50$,
+                \item $x^{(0)}=[0,0]$,
+                \item $x^{(n)}=[20,20]$,
+                \item $r^{(i)}\sim \mathcal{U}(0,20)\times
+                    \mathcal{U}(0,20)$,
+                \item $\lambda _1=1$,
+                \item $\lambda _2=1$,
+                \item $\epsilon =10^{-13}$,
+                \item liczba iteracji = 400.
+            \end{itemize}
+            Ponieważ nie chcemy zmieniać położenia punktu
+            początkowego i końcowego, $x^{(0)}$ i $x^{(n)}$,
+            wyzeruj gradient funkcji $F$ względem tych punktów. \\
+            Obliczenia przeprowadź dla 5 różnych losowych
+            inicjalizacji punktów wewnątrz ścieżki
+            $x^{(1)},\ldots,x^{(n-1)}$. \\
+            Narysuj przykładowy wykres wartości funkcji $F$
+            w zależności od iteracji.
+    \end{enumerate}
 
     \section{Specyfikacja użytego środowiska}
     Specyfikacja:
@@ -99,6 +179,7 @@
     biblioteki:
     \begin{lstlisting}
     import numpy as np
+    import matplotlib.pyplot as plt
     \end{lstlisting}
 
     \subsection{Zadanie 1.}
@@ -143,24 +224,20 @@
     \subsection{Zadanie 2.}
     \subsubsection{Gradient funkcji celu}
     Na początku wyprowadzamy wzór na pochodną cząstkową funkcji
-    celu $F$. Dla $i \in [1,n-1]$ mamy
+    celu $F$. \\
+    Dla $i \in [1,n-1]$ mamy
     \[
         \frac{\partial F}{\partial x^{(i)}}=2\lambda _2
-            (x_{i+1}-x_{i-1})-\lambda _1\sum_{j=1}^{k}
-            \frac{2(x_i-r_j)}{\epsilon +||x_i-r_j||^4}
+            (2x^{(i)}-x^{(i-1)}-x^{(i+1)})-2\lambda _1\sum_{j=1}^{k}
+            \frac{x^{(i)}-r^{(j)}}{(\epsilon +
+            ||x^{(i)}-r^{(j)}||^2)^2}
     \]
-    dla $i = 0$
+    dla $i \in \{ 0,n \}$
     \[
-        \frac{\partial F}{\partial x^{(0)}}=2\lambda _2
-            (x_{1}-x_{0})-\lambda _1\sum_{j=1}^{k}
-            \frac{2(x_0-r_j)}{\epsilon +||x_0-r_j||^4}
+        \frac{\partial F}{\partial x^{(i)}} = (0,0)
     \]
-    a dla $i = n$
-    \[
-        \frac{\partial F}{\partial x^{(n)}}=2\lambda _2
-            (x_{n}-x_{n-1})-\lambda _1\sum_{j=1}^{k}
-            \frac{2(x_n-r_j)}{\epsilon +||x_n-r_j||^4}
-    \]
+    ponieważ chcemy, aby punkty $x_0$ oraz $x_n$ nie zmieniały
+    swojego położenia.
     Zatem, gradient funkcji $F$ dany jest wzorem
     \[
         \nabla F=
@@ -183,6 +260,41 @@
         d_k=-\nabla F(x_k)
     \]
     a $\alpha _k$ to minimum funkcji $F$ wzdłuż kierunku $d_k$.
+    Możemy je znaleźć metodą złotego podziału (ang. golden section
+    search).
+
+    \subsubsection{Metoda złotego podziału}
+    Wybiearmy początkowe oszacowanie przedziału $[a,b]$, w naszym
+    przypadku
+    \[
+        a=0
+    \]
+    \[
+        b=1
+    \]
+    W każdej iteracji przybliżamy szukane minimum obliczając
+    \[
+        \alpha _1=b-\frac{b-a}{\rho}
+    \]
+    \[
+        \alpha _2=a+\frac{b-a}{\rho}
+    \]
+    gdzie
+    \[
+        \rho =\frac{\sqrt{5}+1}{2}
+    \]
+    Jeżeli $f(\alpha _1)<f(\alpha _2)$ to
+    \[
+        b=\alpha _2
+    \]
+    w przeciwnym wypadku
+    \[
+        a=\alpha _1
+    \]
+    Ostateczny wynik to
+    \[
+        \alpha =\frac{a+b}{2}
+    \]
 
     \section{Przedstawienie wyników}
     \subsection{Zadanie 1.}
@@ -209,20 +321,65 @@
         \item $(1,1)$ - punkt siodłowy, $x_0=(0,0)$
     \end{itemize}
 
+    \subsection{Zadanie 2.}
+    Najkrótsze ścieżki robota dla 5 losowych inicjalizacji punktów
+    początkowych $x_i$ oraz $r_i$:
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{path1.png}
+        \caption{Ścieżka 1.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{path2.png}
+        \caption{Ścieżka 2.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{path3.png}
+        \caption{Ścieżka 3.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{path4.png}
+        \caption{Ścieżka 4.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{path5.png}
+        \caption{Ścieżka 5.}
+    \end{figure}
+    Przykładowy wykres wartości funkcji $F$:
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{F_values.png}
+        \caption{Wartości funkcji $F$ w zależności od iteracji.}
+    \end{figure}
+
     \section{Wnioski}
     Metoda Newtona jest skutecznym sposobem znajdowania punktów
     krytycznych funkcji. Powinniśmy pamiętać o odpowiednim doborze
     punktów początkowych $x_0$. \\
+    Algorytm największego spadku, z wykorzystaniem metody złotego
+    podziału do znajdowania minimum funkcji jednej zmiennej,
+    poprawnie przybliża najmniejszą wartość funkcji celu w każdej
+    iteracji. Także wymaga doboru punktu początkowego
+    $x_0$, a dodatkowo, początkowego przedziału $[a,b]$ dla funkcji
+    wzdłuż wektora $d$. \\
     Optymalizacja funkcji celu jest przydatnym zagadnieniem
-    odpowiadającym na szeroki zakres problemów.
+    odpowiadającym na szeroki zakres problemów. Jednak, jak w przypadku
+    wielu algorytmów numerycznych, konieczny jest odpowiedni
+    dobór parametrów.
 
     \section{Bibliografia}
     \url{https://pl.wikipedia.org/wiki/Metoda_Newtona_
         (optymalizacja)} \\
-    \url{https://pl.wikipedia.org/wiki/Metoda_najszybszego_spadku} \\
+    \url{https://pl.wikipedia.org/wiki/Metoda_najszybszego_
+        spadku} \\
     \url{https://pl.wikipedia.org/wiki/Gradient_(matematyka)} \\
     \url{https://home.agh.edu.pl/~gora/algebra/Wyklad07.pdf} \\
     \url{https://pl.wikipedia.org/wiki/Macierz_Hessego} \\
-    \url{https://pl.wikipedia.org/wiki/Pochodna_cz%C4%85stkowa}
-
+    \url{https://pl.wikipedia.org/wiki/Pochodna_cz%C4%85stkowa} \\
+    \url{https://pl.wikipedia.org/wiki/Metoda_z\%C5\%82otego_
+        podzia\%C5\%82u}
 \end{document}
