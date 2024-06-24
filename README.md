@@ -9,5 +9,5 @@
 **Lab 7** - adaptive quadratures<br>
 **Lab 8** - solving nonlinear equations<br>
 **Lab 9** - ordinary differential equations<br>
-**Lab 10** - 🚧 under construction 🚧<br>
+**Lab 10** - Physics-informed Neural Networks<br>
 **Lab 11** - 🚧 under construction 🚧

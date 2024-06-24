@@ -75,7 +75,14 @@
     \end{align*}
 
     \subsection*{}
-    \textbf{Zadanie 2.}
+    \textbf{Zadanie 2.} Funkcja celu użyta do optymalizacji
+    $F(x^{(0)},x^{(1)},\dots ,x^{(n)})$ zdefiniowana jest jako
+    \[
+        F(x^{(0)},x^{(1)},\dots ,x^{(n)})=\lambda _1
+            \sum_{i=0}^{n}\sum_{j=1}^{k}\frac{1}
+            {\epsilon +||x^{(i)}-r{(j)}||_2^2}+\lambda _2
+            \sum_{i=0}^{n-1}||x^{(i+1)}-x^{(i)}||_2^2
+    \]
 
     \section{Specyfikacja użytego środowiska}
     Specyfikacja:
@@ -92,9 +99,130 @@
     biblioteki:
     \begin{lstlisting}
     import numpy as np
-    import matplotlib.pyplot as plt
     \end{lstlisting}
 
-    \subsection{}
+    \subsection{Zadanie 1.}
+    Punkty krytyczne zostały znalezione przy pomocny metody Newtona.
+    Metoda Newtona wybiera punkt startowy $x_0$ i wykonuje kolejne
+    iteracje przybliżające rozwiązanie:
+    \[
+        x_{k+1}=x_k-H(x_k)^{-1}\nabla f(x_k)
+    \]
+    gdzie $\nabla f(x,y)$ to gradient funkcji $f$ dany wzorem
+    \[
+        \nabla f(x,y)=
+        \begin{bmatrix}
+            \frac{\partial f}{\partial x}(x,y) \\
+            \frac{\partial f}{\partial y}(x,y)
+        \end{bmatrix}
+    \]
+    a $H(x,y)$ to macierz Hessego dana wzorem
+    \[
+        H(x,y)=
+        \begin{bmatrix}
+            \frac{\partial ^2f}{\partial x^2}(x,y) &
+                \frac{\partial ^2f}{\partial x\partial y}(x,y) \\
+            \frac{\partial ^2f}{\partial y\partial x}(x,y) &
+            \frac{\partial ^2f}{\partial y^2}(x,y)
+        \end{bmatrix}
+    \]
+    Punkt krytyczny jest minimum, jeżeli wszystkie wartości własne
+    macierzy Hessego są większe od 0, maksimum jeżeli są mniejsze od
+    0, a punktem siodłowym w każdej innej sytuacji. Wartości własne
+    macierzy $A$ można wyznaczyć z równania
+    \[
+        det(A-\lambda I)=0
+    \]
+    gdzie $det()$ to wyznacznik macierzy, a $I$ to macierz
+    jednostkowa. Do obliczenia wartości własnych wykorzystałem
+    funkcję z biblioteki \texttt{NumPy}
+    \[
+        \texttt{np.linalg.eig}
+    \]
+
+    \subsection{Zadanie 2.}
+    \subsubsection{Gradient funkcji celu}
+    Na początku wyprowadzamy wzór na pochodną cząstkową funkcji
+    celu $F$. Dla $i \in [1,n-1]$ mamy
+    \[
+        \frac{\partial F}{\partial x^{(i)}}=2\lambda _2
+            (x_{i+1}-x_{i-1})-\lambda _1\sum_{j=1}^{k}
+            \frac{2(x_i-r_j)}{\epsilon +||x_i-r_j||^4}
+    \]
+    dla $i = 0$
+    \[
+        \frac{\partial F}{\partial x^{(0)}}=2\lambda _2
+            (x_{1}-x_{0})-\lambda _1\sum_{j=1}^{k}
+            \frac{2(x_0-r_j)}{\epsilon +||x_0-r_j||^4}
+    \]
+    a dla $i = n$
+    \[
+        \frac{\partial F}{\partial x^{(n)}}=2\lambda _2
+            (x_{n}-x_{n-1})-\lambda _1\sum_{j=1}^{k}
+            \frac{2(x_n-r_j)}{\epsilon +||x_n-r_j||^4}
+    \]
+    Zatem, gradient funkcji $F$ dany jest wzorem
+    \[
+        \nabla F=
+        \begin{bmatrix}
+            \frac{\partial F}{\partial x^{(0)}} \\
+            \vdots \\
+            \frac{\partial F}{\partial x^{(n)}}
+        \end{bmatrix}
+    \]
+
+    \subsubsection{Algorytm największego spadku}
+    Algorytm iteracyjny polega na przybliżaniu minimum zadanej
+    funkcji celu $F$. Polega na wybraniu punktu początkowego
+    $x_0$ i obliczaniu w kolejnych iteracjach
+    \[
+        x_{k+1}=x_k+\alpha _kd_k
+    \]
+    gdzie
+    \[
+        d_k=-\nabla F(x_k)
+    \]
+    a $\alpha _k$ to minimum funkcji $F$ wzdłuż kierunku $d_k$.
+
+    \section{Przedstawienie wyników}
+    \subsection{Zadanie 1.}
+    Zestawienie punktów krytycznych funkcji. \\
+    Funkcja $f_1$:
+    \begin{itemize}
+        \item $(0,0)$ - punkt siodłowy, $x_0=(1,1)$
+    \end{itemize}
+    Funkcja $f_2$:
+    \begin{itemize}
+        \item $(-1,-1)$ - minimum, $x_0=(-2,-2)$
+        \item $(1,1)$ - minimum, $x_0=(2,2)$
+        \item $(0,0)$ - punkt siodłowy, $x_0=(-0.5,0)$
+    \end{itemize}
+    Funkcja $f_3$:
+    \begin{itemize}
+        \item $(-1,-1)$ - maksimum, $x_0=(-2,-2)$
+        \item $(1,0)$ - minimum, $x_0=(2,0)$
+        \item $(0,-1)$ - punkt siodłowy, $x_0=(0,-2)$
+        \item $(0,0)$ - punkt siodłowy, $x_0=(0,1)$
+    \end{itemize}
+    Funkcja $f_4$:
+    \begin{itemize}
+        \item $(1,1)$ - punkt siodłowy, $x_0=(0,0)$
+    \end{itemize}
+
+    \section{Wnioski}
+    Metoda Newtona jest skutecznym sposobem znajdowania punktów
+    krytycznych funkcji. Powinniśmy pamiętać o odpowiednim doborze
+    punktów początkowych $x_0$. \\
+    Optymalizacja funkcji celu jest przydatnym zagadnieniem
+    odpowiadającym na szeroki zakres problemów.
+
+    \section{Bibliografia}
+    \url{https://pl.wikipedia.org/wiki/Metoda_Newtona_
+        (optymalizacja)} \\
+    \url{https://pl.wikipedia.org/wiki/Metoda_najszybszego_spadku} \\
+    \url{https://pl.wikipedia.org/wiki/Gradient_(matematyka)} \\
+    \url{https://home.agh.edu.pl/~gora/algebra/Wyklad07.pdf} \\
+    \url{https://pl.wikipedia.org/wiki/Macierz_Hessego} \\
+    \url{https://pl.wikipedia.org/wiki/Pochodna_cz%C4%85stkowa}
 
 \end{document}
