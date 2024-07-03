@@ -48,7 +48,7 @@
     morekeywords={as},
     classoffset=1,
     morekeywords={quad, quad_vec, trapz, simps, linregress,
-        newton},
+        newton, fsolve, minimize},
     keywordstyle=\color{md-yellow},
     classoffset=0
 }
@@ -198,6 +198,8 @@
     biblioteki:
     \begin{lstlisting}
     import numpy as np
+    from scipy.optimize import fsolve
+    from scipy.optimize import minimize
     import matplotlib.pyplot as plt
     \end{lstlisting}
 
@@ -454,7 +456,7 @@
         \texttt{scipy.optimize.fsolve}
     \]
     \subsubsection{Metoda Rungego-Kutty czwartego rzędu (RK4)}
-    Układ równań postaci
+    W celu rozwiązanie układu równań postaci
     \[
         y_1'=f_1(y_1,y_2,y_3,t)
     \]
@@ -464,18 +466,30 @@
     \[
         y_3'=f_3(y_1,y_2,y_3,t)
     \]
-    rozwiązujemy korzystając ze wzoru
+    przyjmijmy
     \[
-        y_{n+1}=y_n+\frac{h}{6}(k_1+2k_2+2k_3+k_4)
+        \mathbf{u}=[y_1,y_2,y_3]
     \]
+    korzystamy ze wzoru
+    \[
+        \mathbf{u}_{n+1}=\mathbf{u}_n+\frac{h}{6}(\mathbf{k_1}+
+            2\mathbf{k_2}+2\mathbf{k_3}+\mathbf{k_4})
+    \]
+    gdzie
     \begin{align*}
-        &k_1=f(y_n,t_n) \\
-        &k_2=f \left( t_n+\frac{h}{2},
-            y_n+\frac{hk_1}{2} \right) \\
-        &k_3=f \left( t_n+\frac{h}{2},
-            y_n+\frac{hk_2}{2} \right) \\
-        &k_4=f(t_n+h,y_n+hk_3)
+        &\mathbf{k_1}=\mathbf{F}(\mathbf{u_n}, t_n) \\
+        &\mathbf{k_2}=\mathbf{F} \left( \mathbf{u_n}+\frac{\mathbf{k_1}}{2},
+            t_n+\frac{h}{2} \right) \\
+        &\mathbf{k_3}=\mathbf{F} \left( \mathbf{u_n}+\frac{\mathbf{k_2}}{2},
+            t_n+\frac{h}{2} \right) \\
+        &\mathbf{k_4}=\mathbf{F} \left( \mathbf{u_n}+\mathbf{k_3},
+            t_n+h \right) \\
     \end{align*}
+    oraz
+    \[
+        \mathbf{F}(\mathbf{u},t)=[f_1(y_1,y_2,y_3,t),f_2(y_1,y_2,y_3,t),
+            f_3(y_1,y_2,y_3,t)]
+    \]
 
     \subsubsection{Szacowanie współczynników}
     Oszacowanie wartości współczynników wykonałem z użyciem
@@ -588,7 +602,7 @@
     Niejawna metoda Euler'a okazała się bardziej stabilna niż
     jawna metoda Euler'a, ale charakteryzuje się mniejszą
     dokładnością zwracanych wyników. Zarówno metoda Euler'a,
-    jak i metoda Rungego-Kutty czwartego rzędu (RK4), są
+    jak i metoda Rungego-Kutty czwartego rzędu (RK4), są bardzo
     skutecznymi narzędziami do rozwiązywania układów równań
     różniczkowych. Należy jednak pamiętać o odpowiednim doborze
     kroku $h$ w celu zachowania stabilności metody.

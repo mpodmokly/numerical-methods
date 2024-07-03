@@ -32,39 +32,36 @@ def zad2():
     print(f"Euler's implicit method: {implicit_val}")
     print(f"True value: {true_val}")
 
-def zad3(plot_N = False, method = 1):
+def zad3(method = 1, plot_N = False):
     N = 763
     BETA = 1
     GAMMA = 1 / 7
 
-    def f1(S, I, R, t):
+    def f1(S, I, R):
         return - (BETA / N) * I * S
-    def f2(S, I, R, t):
+    def f2(S, I, R):
         return (BETA / N) * I * S - GAMMA * I
-    def f3(S, I, R, t):
+    def f3(S, I, R):
         return GAMMA * I
 
-    def euler_explicit(Svals, Ivals, Rvals, t_vals, h, steps):
+    def euler_explicit(Svals, Ivals, Rvals, h, steps):
         for i in range(steps):
-            Svals[i + 1] = Svals[i] + h * f1(Svals[i], Ivals[i],\
-                                            Rvals[i], t_vals[i])
-            Ivals[i + 1] = Ivals[i] + h * f2(Svals[i], Ivals[i],\
-                                            Rvals[i], t_vals[i])
-            Rvals[i + 1] = Rvals[i] + h * f3(Svals[i], Ivals[i],\
-                                            Rvals[i], t_vals[i])
+            Svals[i + 1] = Svals[i] + h * f1(Svals[i], Ivals[i], Rvals[i])
+            Ivals[i + 1] = Ivals[i] + h * f2(Svals[i], Ivals[i], Rvals[i])
+            Rvals[i + 1] = Rvals[i] + h * f3(Svals[i], Ivals[i], Rvals[i])
         return Svals, Ivals, Rvals
     
     def euler_step(S_prev, I_prev, R_prev, h):
         def equations(vars):
             S_new, I_new, R_new = vars
-            eq1 = S_new - S_prev - h * f1(S_new, I_new, R_new, 0)
-            eq2 = I_new - I_prev - h * f2(S_new, I_new, R_new, 0)
-            eq3 = R_new - R_prev - h * f3(S_new, I_new, R_new, 0)
+            eq1 = S_new - S_prev - h * f1(S_new, I_new, R_new)
+            eq2 = I_new - I_prev - h * f2(S_new, I_new, R_new)
+            eq3 = R_new - R_prev - h * f3(S_new, I_new, R_new)
             return [eq1, eq2, eq3]
         
         return fsolve(equations, [S_prev, I_prev, R_prev])
 
-    def euler_implicit(Svals, Ivals, Rvals, t_vals, h, steps):
+    def euler_implicit(Svals, Ivals, Rvals, h, steps):
         for i in range(steps):
             S_new, I_new, R_new = euler_step(Svals[i], Ivals[i], Rvals[i], h)
             Svals[i + 1] = S_new
@@ -72,27 +69,20 @@ def zad3(plot_N = False, method = 1):
             Rvals[i + 1] = R_new
         return Svals, Ivals, Rvals
     
-    def RK4(Svals, Ivals, Rvals, t_vals, h, steps):
-        for i in range(steps):
-            k1 = f1(Svals[i], Ivals[i], Rvals[i], t_vals[i])
-            k2 = f1(Svals[i] + h * k1 / 2, Ivals[i] + h * k1 / 2, Rvals[i] + h * k1 / 2, 0)
-            k3 = f1(Svals[i] + h * k2 / 2, Ivals[i] + h * k2 / 2, Rvals[i] + h * k2 / 2, 0)
-            k4 = f1(Svals[i] + h * k3, Ivals[i] + h * k3, Rvals[i] + h * k3, 0)
-            Svals[i + 1] = Svals[i] + h / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
-            
-            k1 = f2(Svals[i], Ivals[i], Rvals[i], t_vals[i])
-            k2 = f2(Svals[i] + h * k1 / 2, Ivals[i] + h * k1 / 2, Rvals[i] + h * k1 / 2, 0)
-            k3 = f2(Svals[i] + h * k2 / 2, Ivals[i] + h * k2 / 2, Rvals[i] + h * k2 / 2, 0)
-            k4 = f2(Svals[i] + h * k3, Ivals[i] + h * k3, Rvals[i] + h * k3, 0)
-            Ivals[i + 1] = Ivals[i] + h / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
+    def RK4(Svals, Ivals, Rvals, h, steps):
+        u = np.zeros((steps + 1, 3))
+        u[0][0] = Svals[0]
+        u[0][1] = Ivals[0]
+        u[0][2] = Rvals[0]
 
-            k1 = f3(Svals[i], Ivals[i], Rvals[i], t_vals[i])
-            k2 = f3(Svals[i] + h * k1 / 2, Ivals[i] + h * k1 / 2, Rvals[i] + h * k1 / 2, 0)
-            k3 = f3(Svals[i] + h * k2 / 2, Ivals[i] + h * k2 / 2, Rvals[i] + h * k2 / 2, 0)
-            k4 = f3(Svals[i] + h * k3, Ivals[i] + h * k3, Rvals[i] + h * k3, 0)
-            Rvals[i + 1] = Rvals[i] + h / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
+        for i in range(steps):
+            k1 = np.array([f1(*u[i]), f2(*u[i]), f3(*u[i])])
+            k2 = np.array([f1(*(u[i] + k1 / 2)), f2(*(u[i] + k1 / 2)), f3(*(u[i] + k1 / 2))])
+            k3 = np.array([f1(*(u[i] + k2 / 2)), f2(*(u[i] + k2 / 2)), f3(*(u[i] + k2 / 2))])
+            k4 = np.array([f1(*(u[i] + k3)), f2(*(u[i] + k3)), f3(*(u[i] + k3))])
+            u[i + 1] = u[i] + h * (k1 + 2 * k2 + 2 * k3 + k4) / 6
         
-        return Svals, Ivals, Rvals
+        return u[:, 0], u[:, 1], u[:, 2]
 
     t_start = 0
     t_end = 14
@@ -108,11 +98,11 @@ def zad3(plot_N = False, method = 1):
     Rvals[0] = 0
 
     if plot_N:
-        Svals, Ivals, Rvals = euler_explicit(Svals, Ivals, Rvals, t_vals, h, steps)
+        Svals, Ivals, Rvals = euler_explicit(Svals, Ivals, Rvals, h, steps)
         plt.plot(t_vals, Svals + Ivals + Rvals, label="explicit Euler")
-        Svals, Ivals, Rvals = euler_implicit(Svals, Ivals, Rvals, t_vals, h, steps)
+        Svals, Ivals, Rvals = euler_implicit(Svals, Ivals, Rvals, h, steps)
         plt.plot(t_vals, Svals + Ivals + Rvals, label="implicit Euler")
-        Svals, Ivals, Rvals = RK4(Svals, Ivals, Rvals, t_vals, h, steps)
+        Svals, Ivals, Rvals = RK4(Svals, Ivals, Rvals, h, steps)
         plt.plot(t_vals, Svals + Ivals + Rvals, label="RK4")
         plt.xlabel("Days")
         plt.ylabel("People")
@@ -121,13 +111,13 @@ def zad3(plot_N = False, method = 1):
         plt.show()
     else:
         if method == 1:
-            Svals, Ivals, Rvals = euler_explicit(Svals, Ivals, Rvals, t_vals, h, steps)
+            Svals, Ivals, Rvals = euler_explicit(Svals, Ivals, Rvals, h, steps)
             title = " explicit Euler method"
         elif method == 2:
-            Svals, Ivals, Rvals = euler_implicit(Svals, Ivals, Rvals, t_vals, h, steps)
+            Svals, Ivals, Rvals = euler_implicit(Svals, Ivals, Rvals, h, steps)
             title = " implicit Euler method"
         else:
-            Svals, Ivals, Rvals = RK4(Svals, Ivals, Rvals, t_vals, h, steps)
+            Svals, Ivals, Rvals = RK4(Svals, Ivals, Rvals, h, steps)
             title = " RK4 method"
     
         plt.plot(t_vals, Svals, label="susceptible")
@@ -189,7 +179,7 @@ def zad3_mincost():
     print(result["x"][0] / result["x"][1])
 
 
-#method = 3
-#plot_N = True
-#zad3(plot_N, method)
-zad3_mincost()
+method = 3
+plot_N = True
+zad3(method, plot_N)
+#zad3_mincost()
